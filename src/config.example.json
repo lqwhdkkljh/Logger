@@ -1,0 +1,6 @@
+{
+    "core": {
+        "token": "A Discord bot token",
+        "prefix": "%"
+    }
+}

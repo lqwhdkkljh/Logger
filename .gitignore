@@ -4,3 +4,6 @@
 # NPM
 node_modules
 *.log
+
+# Configuration
+src/config.json
