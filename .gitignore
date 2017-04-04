@@ -6,4 +6,4 @@ node_modules
 *.log
 
 # Configuration
-src/config.json
+config.json

@@ -1,5 +1,5 @@
 <p style="text-align: center";>
-<img src="./src/res/Logger.png"></p>
+<img src="./res/Logger.png"></p>
 
 Logger is a simple Discord bot for logging different events in your Discord server.
 
