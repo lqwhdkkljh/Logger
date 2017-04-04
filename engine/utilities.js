@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-function fileExists(path) {
+function fileExists (path) {
   try {
     fs.statSync(path)
   } catch (err) {

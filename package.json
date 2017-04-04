@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "A simple Discord bot for logging different events in your Discord server.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "babel-node Logger.js"
   },
   "repository": {
     "type": "git",
