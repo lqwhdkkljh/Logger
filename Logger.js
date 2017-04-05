@@ -1,10 +1,18 @@
 import Discordie from 'discordie'
 const bot = new Discordie()
 
+const argv = require('yargs').argv
+
 import * as utils from './engine/utilities'
 import { Commands } from './engine/commands'
 
 process.title = 'Logger'
+
+if (argv.dev === true) {
+  console.log('Starting in developer mode...')
+} else {
+  console.log('Starting...')
+}
 
 // Verify config exists
 utils.fileExists('./config.json')
@@ -15,8 +23,12 @@ const Config = require('./config.json')
 try {
   bot.connect({ token: Config.core.token })
 } catch (err) {
-  console.log('Error encountered when logging in: ' + err)
-  console.log('Exiting...')
+  if (argv.dev === true) {
+    console.log('Error while logging in: ')
+    console.log(err)
+  } else {
+    console.log('An error occurred while logging in, invalid credentials?')
+  }
   process.exit()
 }
 
@@ -39,8 +51,12 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
         try {
           Commands[cmdObj].func(y.message)
         } catch (err) {
-          console.log('An error occurred while executing command ' + cmdObj + ', error returned:')
-          console.log(err)
+          if (argv.dev === true) {
+            console.log('An error occurred while executing command ' + cmdObj + ', error returned:')
+            console.log(err)
+          } else {
+            console.log('An error occurred while executing command ' + cmdObj + '!')
+          }
         }
       }
     }

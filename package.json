@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "description": "A simple Discord bot for logging different events in your Discord server.",
   "scripts": {
-    "start": "babel-node Logger.js"
+    "start": "babel-node Logger.js",
+    "start-dev": "babel-node Logger.js --dev",
+    "test": "standard && eslint Logger.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +19,8 @@
   },
   "homepage": "https://github.com/LWTechGaming/Logger#readme",
   "dependencies": {
-    "discordie": "^0.11.0"
+    "discordie": "^0.11.0",
+    "yargs": "^7.0.2"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
@@ -27,10 +30,5 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^2.1.1",
     "standard": "^9.0.2"
-  },
-  "standard": {
-    "ignore": [
-      "Logger.js"
-    ]
   }
 }
