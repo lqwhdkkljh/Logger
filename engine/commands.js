@@ -33,7 +33,7 @@ Commands.info = {
         },
         {
           'name': 'What if I want to contribute?',
-          'value': 'My code is open source and improvements are appreaciated! Check me out on GitHub: https://github.com/LWTechGaming/Logger'
+          'value': 'My code is open source and improvements are appreciated! Check me out on GitHub: https://github.com/LWTechGaming/Logger'
         }
       ]
     }
