@@ -43,19 +43,20 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
   if (y.message.content.startsWith(prefix)) {
     if (y.message.author.bot || y.message.author.id === bot.User.id) {
     } else {
-      let cmd = y.message.content.substring(prefix.length)
-      let cmdObj = cmd.split(' ')[0].toLowerCase()
+      let cmdObj = y.message.content.substring(prefix.length).split(' ')[0].toLowerCase()
       let keys = Object.keys(Commands)
+      let splitSuffix = y.message.content.substr(Config.core.prefix.length).split(' ')
+      let suffix = splitSuffix.slice(1, splitSuffix.length).join(' ')
 
       if (keys.includes(cmdObj)) {
         try {
-          Commands[cmdObj].func(y.message)
+          Commands[cmdObj].func(y.message, suffix)
         } catch (err) {
           if (argv.dev === true) {
-            console.log('An error occurred while executing command ' + cmdObj + ', error returned:')
+            console.log('An error occurred while executing command "' + cmdObj + '", error returned:')
             console.log(err)
           } else {
-            console.log('An error occurred while executing command ' + cmdObj + '!')
+            console.log('An error occurred while executing command "' + cmdObj + '"!')
           }
         }
       }
