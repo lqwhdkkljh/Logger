@@ -15,45 +15,45 @@ import { getMinutes, getHours } from '../engine/timeutils'
 
 function guildJoin (m, bot) {
   r.db('Guilds').table('all').filter({
-    'guildID': m.guildId
+    'guildID': m.member.guild_id
   }).run().then((lc) => {
     let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
     let minutes = getMinutes()
     minutes <= 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
-
     let data = {
-      'title': `User joined`,
-      'description': '\u200b',
-      'timestamp': new Date(),
-      'color': 2221329,
-      'footer': { 'icon_url': `${bot.User.avatarURL}`, 'text': 'Logger' },
-      'thumbnail': { 'url': `${m.member.avatarURL}` },
-      'fields': [{
-        'name': 'Name:',
-        'value': `${m.member.username}#${m.member.discriminator}`
-      },
-      {
-        'name': 'ID:',
-        'value': `${m.member.id}`
-      },
-      {
-        'name': 'Account created:',
-        'value': `${m.member.createdAt}`
-      }]
-    }
+       'title': `User joined`,
+       'timestamp': new Date(),
+       'color': 2221329,
+       'footer': { 'icon_url': `${bot.User.avatarURL}`, 'text': 'Logger' },
+       'thumbnail': { 'url': `${bot.User.avatarURL}` },
+       'fields': [{
+         'name': 'Name:',
+         'value': `${m.member.username}#${m.member.discriminator}`
+       },
+       {
+         'name': 'ID:',
+         'value': `${m.member.id}`
+       },
+       {
+         'name': 'Account created:',
+         'value': `${m.member.createdAt}`
+       }]
+     }
     logChannel.sendMessage(`📥 [\`${getHours()}:${minutes}\`] User \`${m.member.username}#${m.member.discriminator}\` joined the server.`, false, data)
   })
 }
 
 function guildLeave (u, bot) {
   r.db('Guilds').table('all').filter({
-    'guildID': u.guildId
+    'guildID': u.data.guild_id
   }).run().then((lc) => {
     let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
     let minutes = getMinutes()
     minutes <= 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
 
     let data = {
+      'content':'\u200b',
+      'embed': {
       'title': `User left or was kicked`,
       'description': '\u200b',
       'timestamp': new Date(),
@@ -68,6 +68,7 @@ function guildLeave (u, bot) {
         'name': 'ID:',
         'value': `${u.user.id}`
       }]
+    }
     }
     logChannel.sendMessage(`📤 [\`${getHours()}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` left or was kicked from the server.`)
   })

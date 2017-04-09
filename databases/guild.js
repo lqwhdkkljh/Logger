@@ -55,7 +55,8 @@ function updateLogChannel (msg) {
       } else if (u.unchanged === 1) {
         msg.channel.sendMessage(`I'm already sending log messages to channel "${msg.channel.name}", ${msg.author.mention}!`)
       } else {
-        console.log(`A problem has occurred, check it out!\n${u}`)
+        console.log(`A problem has occurred, check it out!`)
+        console.log(u)
       }
     })
 }
