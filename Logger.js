@@ -1,5 +1,6 @@
 import Discordie from 'discordie'
 const bot = new Discordie()
+export { bot }
 
 const argv = require('yargs').argv
 
@@ -7,6 +8,7 @@ import * as utils from './engine/utilities'
 import { Commands } from './engine/commands'
 import { guildCreate, guildDelete } from './databases/guild.js'
 import { voiceJoin, voiceLeave } from './databases/voice.js'
+import { guildJoin, guildLeave, guildBan, guildUnban } from './databases/server.js'
 
 process.title = 'Logger'
 
@@ -35,9 +37,7 @@ try {
 }
 
 bot.Dispatcher.on('GATEWAY_READY', x => {
-  console.log('Successfully logged in!')
-  console.log('User: ' + bot.User.username)
-  console.log('ID: ' + bot.User.id)
+  console.log(`Successfully logged in!\nUser: ${bot.User.username}\nID: ${bot.User.id}`)
 })
 
 bot.Dispatcher.on('MESSAGE_CREATE', y => {
@@ -55,10 +55,9 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
           Commands[cmdObj].func(y.message, suffix, bot)
         } catch (err) {
           if (argv.dev === true) {
-            console.log('An error occurred while executing command "' + cmdObj + '", error returned:')
-            console.log(err)
+            console.log(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
           } else {
-            console.log('An error occurred while executing command "' + cmdObj + '"!')
+            console.log(`An error occurred while executing command '${cmdObj}'!`)
           }
         }
       }
@@ -68,7 +67,6 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
 
 bot.Dispatcher.on('GUILD_CREATE', (g) => {
   guildCreate(g)
-  // guildCreate(g)
 })
 
 bot.Dispatcher.on('GUILD_DELETE', (g) => {
@@ -83,6 +81,18 @@ bot.Dispatcher.on('VOICE_CHANNEL_LEAVE', (v) => {
   voiceLeave(v, bot)
 })
 
-export {
-  bot
-}
+bot.Dispatcher.on('GUILD_MEMBER_ADD', (m) => {
+  guildJoin(m, bot)
+})
+
+bot.Dispatcher.on('GUILD_MEMBER_REMOVE', (u) => {
+  guildLeave(u, bot)
+})
+
+bot.Dispatcher.on('GUILD_BAN_ADD', (u) => {
+  guildBan(u, bot)
+})
+
+bot.Dispatcher.on('GUILD_BAN_REMOVE', (u) => {
+  guildUnban(u, bot)
+})

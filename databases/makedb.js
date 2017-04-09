@@ -1,12 +1,15 @@
+const Config = require('../config.json')
+
 const Promise = require('promise')
 const Dash = require('rethinkdbdash')
+
 let r = new Dash({
-  user: 'admin',
-  password: '',
+  user: Config.database.user,
+  password: Config.database.pass,
   silent: true,
   servers: [{
-    host: 'localhost',
-    port: '28015'
+    host: Config.database.host,
+    port: Config.database.pass
   }]
 })
 
