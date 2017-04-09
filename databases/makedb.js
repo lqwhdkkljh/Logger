@@ -9,18 +9,23 @@ let r = new Dash({
     port: '28015'
   }]
 })
+
 createDB().then((e) => {
   console.log(e)
   createTable().then((e) => {
-    cleanAndExit().then((e) => {
-      console.log(e)
+    console.log(e)
+    cleanAndExit()
     }).catch(e => {
-      console.log(e)
+      console.log(e.msg)
+      if (e.startsWith("TypeError:")) {
+        console.log('No connections to clean or close.')
+      } else {
+        console.log(e)
+      }
     })
   }).catch(e => {
     console.log(e)
-  })
-}).catch(e => {
+  }).catch(e => {
   if (e.msg === 'None of the pools have an opened connection and failed to open a new one') {
     console.log('Failed to connect to the database, is it running?')
   } else {
@@ -48,7 +53,7 @@ function createTable () {
     r.db('Guilds').tableCreate('all').run().then((tb) => {
       resolve('Table "all" created!')
     }).catch(err => {
-      if (err.msg) {
+      if (err.msg === 'Table `Guilds.all` already exists.') {
         resolve('The "all" table already exists.')
       } else {
         reject(err)
