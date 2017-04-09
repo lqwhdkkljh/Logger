@@ -7,3 +7,9 @@ node_modules
 
 # Configuration
 config.json
+
+# Database
+rethinkdb_data
+
+#RethinkDB itself
+rethinkdb.exe

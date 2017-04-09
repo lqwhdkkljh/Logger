@@ -5,6 +5,8 @@ const argv = require('yargs').argv
 
 import * as utils from './engine/utilities'
 import { Commands } from './engine/commands'
+import { guildCreate, guildDelete } from './databases/guild.js'
+import { voiceJoin, voiceLeave } from './databases/voice.js'
 
 process.title = 'Logger'
 
@@ -50,7 +52,7 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
 
       if (keys.includes(cmdObj)) {
         try {
-          Commands[cmdObj].func(y.message, suffix)
+          Commands[cmdObj].func(y.message, suffix, bot)
         } catch (err) {
           if (argv.dev === true) {
             console.log('An error occurred while executing command "' + cmdObj + '", error returned:')
@@ -63,3 +65,24 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
     }
   }
 })
+
+bot.Dispatcher.on('GUILD_CREATE', (g) => {
+  guildCreate(g)
+  // guildCreate(g)
+})
+
+bot.Dispatcher.on('GUILD_DELETE', (g) => {
+  guildDelete(g)
+})
+
+bot.Dispatcher.on('VOICE_CHANNEL_JOIN', (v) => {
+  voiceJoin(v, bot)
+})
+
+bot.Dispatcher.on('VOICE_CHANNEL_LEAVE', (v) => {
+  voiceLeave(v, bot)
+})
+
+export {
+  bot
+}

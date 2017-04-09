@@ -1,4 +1,5 @@
 const Commands = []
+import { updateLogChannel } from '../databases/guild.js'
 
 Commands.help = {
   name: 'help',
@@ -7,8 +8,16 @@ Commands.help = {
     if (!Commands[suffix]) {
       msg.channel.sendMessage('Command not found.')
     } else {
-      msg.channel.sendMessage('`'+Commands[suffix].info+'`')
+      msg.channel.sendMessage('`' + Commands[suffix].info + '`')
     }
+  }
+}
+
+Commands.setchannel = {
+  name: 'setchannel',
+  info: 'Sets the log channel for your server!',
+  func: function (msg, suffix) {
+    updateLogChannel(msg)
   }
 }
 
@@ -37,21 +46,21 @@ Commands.info = {
         'url': 'https://avatars0.githubusercontent.com/u/18148938?v=3&s=180'
       },
       'fields': [{
-          'name': 'Who am I?',
-          'value': 'I\'m a bot that can do some logging in your Discord server, for instance join and leave notifications!'
-        },
-        {
-          'name': 'Who created me?',
-          'value': 'I was developed by LWTech#7575 and Piero#0905. I\'m written in JavaScript Node.js and my library is [discordie](http://qeled.github.io/discordie).'
-        },
-        {
-          'name': 'Where can I get help or give suggestions?',
-          'value': 'You can join my home server, LW\'s Lodge! There you can get help or suggest new features. Join here: https://discord.gg/NaN39J8'
-        },
-        {
-          'name': 'What if I want to contribute?',
-          'value': 'My code is open source and improvements are appreciated! Check me out on GitHub: https://github.com/LWTechGaming/Logger'
-        }
+        'name': 'Who am I?',
+        'value': 'I\'m a bot that can do some logging in your Discord server, for instance join and leave notifications!'
+      },
+      {
+        'name': 'Who created me?',
+        'value': 'I was developed by LWTech#7575 and Piero#0905. I\'m written in JavaScript Node.js and my library is [discordie](http://qeled.github.io/discordie).'
+      },
+      {
+        'name': 'Where can I get help or give suggestions?',
+        'value': 'You can join my home server, LW\'s Lodge! There you can get help or suggest new features. Join here: https://discord.gg/NaN39J8'
+      },
+      {
+        'name': 'What if I want to contribute?',
+        'value': 'My code is open source and improvements are appreciated! Check me out on GitHub: https://github.com/LWTechGaming/Logger'
+      }
       ]
     }
     msg.channel.sendMessage('Information about Logger:', false, data)
