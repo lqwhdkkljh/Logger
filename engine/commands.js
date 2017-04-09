@@ -8,7 +8,7 @@ Commands.help = {
     if (!Commands[suffix]) {
       msg.channel.sendMessage('Command not found.')
     } else {
-      msg.channel.sendMessage('`' + Commands[suffix].info + '`')
+      msg.channel.sendMessage(`${Commands[suffix].info}`)
     }
   }
 }

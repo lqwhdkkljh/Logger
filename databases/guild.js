@@ -1,11 +1,13 @@
+const Config = require('../config.json')
+
 const Dash = require('rethinkdbdash')
 let r = new Dash({
-  user: 'admin',
-  password: '',
+  user: Config.database.user,
+  password: Config.database.pass,
   silent: true,
   servers: [{
-    host: 'localhost',
-    port: '28015'
+    host: Config.database.host,
+    port: Config.database.port
   }]
 })
 
@@ -53,8 +55,7 @@ function updateLogChannel (msg) {
       } else if (u.unchanged === 1) {
         msg.channel.sendMessage(`I'm already sending log messages to channel "${msg.channel.name}", ${msg.author.mention}!`)
       } else {
-        console.log('A problem has occurred, check it out!\n')
-        console.log(u)
+        console.log(`A problem has occurred, check it out!\n${u}`)
       }
     })
 }
