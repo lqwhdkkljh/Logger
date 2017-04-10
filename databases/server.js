@@ -13,6 +13,15 @@ let r = new Dash({
 
 import { getMinutes, getHours } from '../engine/timeutils'
 
+function getAccountDate (m) {
+  let createdAt = new Date() - new Date(m.member.createdAt)
+  if (createdAt > 604800000) {
+    return ['2221329', 'no']
+  } else {
+    return ['16734003', 'yes, be warned.']
+  }
+}
+
 function guildJoin (m, bot) {
   r.db('Guilds').table('all').filter({
     'guildID': m.member.guild_id
@@ -20,10 +29,11 @@ function guildJoin (m, bot) {
     let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
     let minutes = getMinutes()
     minutes <= 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
+    let sevenDayCheck = getAccountDate(m)
     let data = {
        'title': `User joined`,
        'timestamp': new Date(),
-       'color': 2221329,
+       'color': accDate[0],
        'footer': { 'icon_url': `${bot.User.avatarURL}`, 'text': 'Logger' },
        'thumbnail': { 'url': `${bot.User.avatarURL}` },
        'fields': [{
@@ -36,8 +46,13 @@ function guildJoin (m, bot) {
        },
        {
          'name': 'Account created:',
-         'value': `${m.member.createdAt}`
-       }]
+         'value': `${m.member.createdAt}`,
+       },
+       {
+         'name': 'Older than 7 days?',
+         'value': sevenDayCheck[1]
+       }
+       ]
      }
     logChannel.sendMessage(`📥 [\`${getHours()}:${minutes}\`] User \`${m.member.username}#${m.member.discriminator}\` joined the server.`, false, data)
   })
