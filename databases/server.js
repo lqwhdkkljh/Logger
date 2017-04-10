@@ -31,29 +31,29 @@ function guildJoin (m, bot) {
     minutes <= 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
     let sevenDayCheck = getAccountDate(m)
     let data = {
-       'title': `User joined`,
-       'timestamp': new Date(),
-       'color': accDate[0],
-       'footer': { 'icon_url': `${bot.User.avatarURL}`, 'text': 'Logger' },
-       'thumbnail': { 'url': `${bot.User.avatarURL}` },
-       'fields': [{
-         'name': 'Name:',
-         'value': `${m.member.username}#${m.member.discriminator}`
-       },
-       {
-         'name': 'ID:',
-         'value': `${m.member.id}`
-       },
-       {
-         'name': 'Account created:',
-         'value': `${m.member.createdAt}`,
-       },
-       {
-         'name': 'Older than 7 days?',
-         'value': sevenDayCheck[1]
-       }
-       ]
-     }
+      'title': `User joined`,
+      'timestamp': new Date(),
+      'color': getAccountDate(),
+      'footer': { 'icon_url': `${bot.User.avatarURL}`, 'text': 'Logger' },
+      'thumbnail': { 'url': `${bot.User.avatarURL}` },
+      'fields': [{
+        'name': 'Name:',
+        'value': `${m.member.username}#${m.member.discriminator}`
+      },
+      {
+        'name': 'ID:',
+        'value': `${m.member.id}`
+      },
+      {
+        'name': 'Account created:',
+        'value': `${m.member.createdAt}`
+      },
+      {
+        'name': 'Older than 7 days?',
+        'value': sevenDayCheck[1]
+      }
+      ]
+    }
     logChannel.sendMessage(`📥 [\`${getHours()}:${minutes}\`] User \`${m.member.username}#${m.member.discriminator}\` joined the server.`, false, data)
   })
 }
@@ -67,25 +67,25 @@ function guildLeave (u, bot) {
     minutes <= 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
 
     let data = {
-      'content':'\u200b',
+      'content': '\u200b',
       'embed': {
-      'title': `User left or was kicked`,
-      'description': '\u200b',
-      'timestamp': new Date(),
-      'color': 15789330,
-      'footer': { 'icon_url': `${bot.User.avatarURL}`, 'text': 'Logger' },
-      'thumbnail': { 'url': `${u.user.avatarURL}` },
-      'fields': [{
-        'name': 'Name:',
-        'value': `${u.user.username}#${u.user.discriminator}`
-      },
-      {
-        'name': 'ID:',
-        'value': `${u.user.id}`
-      }]
+        'title': `User left or was kicked`,
+        'description': '\u200b',
+        'timestamp': new Date(),
+        'color': 15789330,
+        'footer': { 'icon_url': `${bot.User.avatarURL}`, 'text': 'Logger' },
+        'thumbnail': { 'url': `${u.user.avatarURL}` },
+        'fields': [{
+          'name': 'Name:',
+          'value': `${u.user.username}#${u.user.discriminator}`
+        },
+        {
+          'name': 'ID:',
+          'value': `${u.user.id}`
+        }]
+      }
     }
-    }
-    logChannel.sendMessage(`📤 [\`${getHours()}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` left or was kicked from the server.`)
+    logChannel.sendMessage(`📤 [\`${getHours()}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` left or was kicked from the server.`, false, data)
   })
 }
 

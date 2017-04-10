@@ -1,5 +1,5 @@
 const Commands = []
-import { updateLogChannel } from '../databases/guild.js'
+import { updateLogChannel } from '../databases/guild'
 
 Commands.help = {
   name: 'help',

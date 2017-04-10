@@ -18,17 +18,17 @@ createDB().then((e) => {
   createTable().then((e) => {
     console.log(e)
     cleanAndExit()
-    }).catch(e => {
-      console.log(e.msg)
-      if (e.startsWith("TypeError:")) {
-        console.log('No connections to clean or close.')
-      } else {
-        console.log(e)
-      }
-    })
   }).catch(e => {
-    console.log(e)
-  }).catch(e => {
+    console.log(e.msg)
+    if (e.startsWith('TypeError:')) {
+      console.log('No connections to clean or close.')
+    } else {
+      console.log(e)
+    }
+  })
+}).catch(e => {
+  console.log(e)
+}).catch(e => {
   if (e.msg === 'None of the pools have an opened connection and failed to open a new one') {
     console.log('Failed to connect to the database, is it running?')
   } else {

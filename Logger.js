@@ -6,9 +6,9 @@ const argv = require('yargs').argv
 
 import * as utils from './engine/utilities'
 import { Commands } from './engine/commands'
-import { guildCreate, guildDelete } from './databases/guild.js'
-import { voiceJoin, voiceLeave } from './databases/voice.js'
-import { guildJoin, guildLeave, guildBan, guildUnban } from './databases/server.js'
+import { guildCreate, guildDelete } from './databases/guild'
+import { voiceJoin, voiceLeave } from './databases/voice'
+import { guildJoin, guildLeave, guildBan, guildUnban } from './databases/server'
 
 process.title = 'Logger'
 
@@ -54,7 +54,6 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
         try {
           let botPerms = bot.User.permissionsFor(y.message.channel)
           if (!botPerms.Text.READ_MESSAGES || !botPerms.Text.SEND_MESSAGES) {
-            return;
           } else {
             Commands[cmdObj].func(y.message, suffix, bot)
           }
