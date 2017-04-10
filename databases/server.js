@@ -33,7 +33,7 @@ function guildJoin (m, bot) {
     let data = {
       'title': `User joined`,
       'timestamp': new Date(),
-      'color': getAccountDate(),
+      'color': sevenDayCheck[0],
       'footer': { 'icon_url': `${bot.User.avatarURL}`, 'text': 'Logger' },
       'thumbnail': { 'url': `${bot.User.avatarURL}` },
       'fields': [{
