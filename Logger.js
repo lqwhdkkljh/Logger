@@ -52,7 +52,12 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
 
       if (keys.includes(cmdObj)) {
         try {
-          Commands[cmdObj].func(y.message, suffix, bot)
+          let botPerms = bot.User.permissionsFor(y.message.channel)
+          if (!botPerms.Text.READ_MESSAGES || !botPerms.Text.SEND_MESSAGES) {
+            return;
+          } else {
+            Commands[cmdObj].func(y.message, suffix, bot)
+          }
         } catch (err) {
           if (argv.dev === true) {
             console.log(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
