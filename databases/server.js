@@ -16,9 +16,9 @@ import { getMinutes, getHours } from '../engine/timeutils'
 function getAccountDate (m) {
   let createdAt = new Date() - new Date(m.member.createdAt)
   if (createdAt > 604800000) {
-    return ['2221329', 'no']
+    return ['2221329', 'Yes']
   } else {
-    return ['16734003', 'yes, be warned.']
+    return ['16734003', 'No, be warned']
   }
 }
 

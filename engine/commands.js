@@ -1,5 +1,5 @@
 const Commands = []
-import { updateLogChannel } from '../databases/guild'
+import { guildCreate, updateLogChannel } from '../databases/guild'
 
 Commands.help = {
   name: 'help',
@@ -18,6 +18,14 @@ Commands.setchannel = {
   info: 'Sets the log channel for your server!',
   func: function (msg, suffix) {
     updateLogChannel(msg)
+  }
+}
+
+Commands.initguild = {
+  name: 'initguild',
+  info: 'Creates a database for the current guild.',
+  func: function (g) {
+    guildCreate(g)
   }
 }
 
