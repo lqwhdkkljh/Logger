@@ -1,4 +1,5 @@
 const Config = require('../config.json')
+import { logger } from '../engine/logger'
 
 const Dash = require('rethinkdbdash')
 let r = new Dash({
@@ -20,13 +21,13 @@ function guildCreate (g) {
       'logchannel': ''
     }).run().then((r) => {
       if (r.inserted === 1) {
-        console.log(`Success while creating guild info for server '${g.guild.name}!`)
+        logger.info(`Success while creating guild info for server '${g.guild.name}!`)
       } else {
-        console.log(`Something went wrong while creating guild info for server ${g.guild.name}!`)
+        logger.error(`Something went wrong while creating guild info for server ${g.guild.name}!`)
       }
     })
   } catch (e) {
-    console.log(`An error occured while creating guild information! ${e}`)
+    logger.error(`An error occured while creating guild information! ${e}`)
   }
 }
 
@@ -36,11 +37,11 @@ function guildDelete (g) {
       'guildID': g.data.id
     }).delete().run().then((d) => {
       if (d.deleted === 1) {
-        console.log(`Successfully deleted guild information for ${g.data.name} (${g.data.id})`)
+        logger.info(`Successfully deleted guild information for ${g.data.name} (${g.data.id})`)
       }
     })
   } catch (e) {
-    console.log(`An error has occured while deleting guild! \n${e}`)
+    logger.error(`An error has occured while deleting guild! \n${e}`)
   }
 }
 
@@ -50,13 +51,13 @@ function updateLogChannel (msg) {
   }).update({
     'logchannel': msg.channel.id}).run().then((u) => {
       if (u.replaced === 1) {
-        console.log('Successfully updated logchannel!')
+        logger.info('Successfully updated logchannel!')
         msg.channel.sendMessage(`Alright ${msg.author.mention}, I will send messages to "${msg.channel.name}" (${msg.channel.id})!`)
       } else if (u.unchanged === 1) {
         msg.channel.sendMessage(`I'm already sending log messages to channel "${msg.channel.name}", ${msg.author.mention}!`)
       } else {
-        console.log(`A problem has occurred, check it out!`)
-        console.log(u)
+        logger.error(`A problem has occurred, check it out!`)
+        logger.error(u)
       }
     })
 }
@@ -64,7 +65,7 @@ function updateLogChannel (msg) {
 function getLogChannel (msg, bot, cb) {
   r.db('Guilds').table('all').filter({'guildID': msg.guild.id}).run().then((y) => {
     if (y === null) {
-      console.log(`I don't have information for guild "${msg.guild.name}"`)
+      logger.warn(`I don't have information for guild "${msg.guild.name}"`)
     } else {
       let id = y[0].logchannel
       let logChannel = bot.Channels.get(`${id}`)
@@ -78,9 +79,9 @@ function pingDatabase () {
     r.db('Guilds').table('all').run()
   } catch (err) {
     if (err.msg === 'None of the pools have an opened connection and failed to open a new one') {
-      console.log(`Failed to connect to the database, verify RethinkDB is running!\nError: ${err}`)
+      logger.error(`Failed to connect to the database, verify RethinkDB is running!\nError: ${err}`)
     } else {
-      console.log(`Error occurred while connecting to the database:\n${err}`)
+      logger.error(`Error occurred while connecting to the database:\n${err}`)
     }
     process.exit()
   }

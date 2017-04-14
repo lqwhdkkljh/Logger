@@ -1,4 +1,5 @@
 const Config = require('../config.json')
+import { logger } from '../engine/logger'
 
 const Dash = require('rethinkdbdash')
 let r = new Dash({

@@ -9,7 +9,7 @@ This bot currently supports setting a custom log channel on a per-server basis. 
 
 **Current loggable events:**
 
-| Event | Log type | Gateway name |
+| Event | Log type | Event name |
 | ----- | -------- | ------------ |
 | User joins server | Embed | `GUILD_MEMBER_ADD` |
 | User leaves server | Embed | `GUILD_MEMBER_REMOVE` |

@@ -1,4 +1,5 @@
 const Config = require('../config.json')
+import { logger } from '../engine/logger'
 
 const Promise = require('promise')
 const Dash = require('rethinkdbdash')
@@ -14,25 +15,25 @@ let r = new Dash({
 })
 
 createDB().then((e) => {
-  console.log(e)
+  logger.error(e)
   createTable().then((e) => {
-    console.log(e)
+    logger.error(e)
     cleanAndExit()
   }).catch(e => {
-    console.log(e.msg)
+    logger.error(e.msg)
     if (e.startsWith('TypeError:')) {
-      console.log('No connections to clean or close.')
+      logger.error('No connections to clean or close.')
     } else {
-      console.log(e)
+      logger.error(e)
     }
   })
 }).catch(e => {
-  console.log(e)
+  logger.error(e)
 }).catch(e => {
   if (e.msg === 'None of the pools have an opened connection and failed to open a new one') {
-    console.log('Failed to connect to the database, is it running?')
+    logger.error('Failed to connect to the database, is it running?')
   } else {
-    console.log(`Unhandled error:\n${e}`)
+    logger.error(`Unhandled error:\n${e}`)
   }
   cleanAndExit()
 })

@@ -5,6 +5,7 @@ export { bot }
 const argv = require('yargs').argv
 
 import * as utils from './engine/utilities'
+import { logger } from './engine/logger'
 import { Commands } from './engine/commands'
 import { guildCreate, guildDelete, pingDatabase } from './databases/guild'
 import { voiceJoin, voiceLeave } from './databases/voice'
@@ -14,9 +15,9 @@ import { messageUpdate, messageDelete } from './databases/message'
 process.title = 'Logger'
 
 if (argv.dev === true) {
-  console.log('Starting in developer mode...')
+  logger.info('Starting in developer mode...')
 } else {
-  console.log('Starting...')
+  logger.info('Starting...')
 }
 
 // Verify RethinkDB is running
@@ -32,16 +33,16 @@ try {
   bot.connect({ token: Config.core.token })
 } catch (err) {
   if (argv.dev === true) {
-    console.log('Error while logging in: ')
-    console.log(err)
+    logger.error('Error while logging in: ')
+    logger.error(err)
   } else {
-    console.log('An error occurred while logging in, invalid credentials?')
+    logger.error('An error occurred while logging in, invalid credentials?')
   }
   process.exit()
 }
 
 bot.Dispatcher.on('GATEWAY_READY', x => {
-  console.log(`Successfully logged in!\nUser: ${bot.User.username}\nID: ${bot.User.id}`)
+  logger.info(`Successfully logged in!\nUser: ${bot.User.username}\nID: ${bot.User.id}`)
 })
 
 bot.Dispatcher.on('MESSAGE_CREATE', y => {
@@ -63,9 +64,9 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
           }
         } catch (err) {
           if (argv.dev === true) {
-            console.log(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
+            logger.error(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
           } else {
-            console.log(`An error occurred while executing command '${cmdObj}'!`)
+            logger.error(`An error occurred while executing command '${cmdObj}'!`)
           }
         }
       }

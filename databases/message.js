@@ -1,4 +1,5 @@
 const Config = require('../config.json')
+import { logger } from '../engine/logger'
 
 const Dash = require('rethinkdbdash')
 let r = new Dash({
@@ -26,7 +27,7 @@ function messageUpdate (m, bot) {
     let current = m.message.content
     let edits = m.message.edits
     let before = edits[edits.length - 1].content
-    logChannel.sendMessage(`❗ [\`${hours}:${minutes}\`] User \`${m.message.member.username}#${m.message.member.discriminator}\` edited their message in ${m.message.channel.name}:\nBefore: ${before}\nAfter: ${current}`)
+    logChannel.sendMessage(`❗ [\`${hours}:${minutes}\`] User \`${m.message.member.username}#${m.message.member.discriminator}\` edited their message in *${m.message.channel.name}*:\nBefore: ${before}\nAfter: ${current}`)
   })
 }
 
@@ -35,7 +36,7 @@ function messageDelete (m, bot) {
     'guildID': m.message.guild.id
   }).run().then((lc) => {
     let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
-    logChannel.sendMessage(`❌ [\`${hours}:${minutes}\`] User \`${m.message.member.username}#${m.message.member.discriminator}\` deleted their message in ${m.message.channel.name}:\n${m.message.content}`)
+    logChannel.sendMessage(`❌ [\`${hours}:${minutes}\`] User \`${m.message.member.username}#${m.message.member.discriminator}\` deleted their message in *${m.message.channel.name}*:\n${m.message.content}`)
   })
 }
 
