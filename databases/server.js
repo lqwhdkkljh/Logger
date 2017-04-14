@@ -29,6 +29,8 @@ function guildJoin (m, bot) {
     let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
     let minutes = getMinutes()
     minutes <= 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
+    let hours = getHours()
+    hours <= 10 ? hours = `0${getHours()}` : hours = getHours()
     let sevenDayCheck = getAccountDate(m)
     let data = {
       'title': `User joined`,
@@ -54,7 +56,7 @@ function guildJoin (m, bot) {
       }
       ]
     }
-    logChannel.sendMessage(`📥 [\`${getHours()}:${minutes}\`] User \`${m.member.username}#${m.member.discriminator}\` joined the server.`, false, data)
+    logChannel.sendMessage(`📥 [\`${hours}:${minutes}\`] User \`${m.member.username}#${m.member.discriminator}\` joined the server.`, false, data)
   })
 }
 
@@ -63,18 +65,17 @@ function guildLeave (u, bot) {
     'guildID': u.data.guild_id
   }).run().then((lc) => {
     let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
+    let hours = getHours()
+    hours <= 10 ? hours = `0${getHours()}` : hours = getHours()
     let minutes = getMinutes()
     minutes <= 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
 
     let data = {
-      'content': '\u200b',
-      'embed': {
         'title': `User left or was kicked`,
-        'description': '\u200b',
         'timestamp': new Date(),
         'color': 15789330,
         'footer': { 'icon_url': `${bot.User.avatarURL}`, 'text': 'Logger' },
-        'thumbnail': { 'url': `${u.user.avatarURL}` },
+        'thumbnail': { 'url': `${u.user.avatarURL ? u.user.avatarURL : 'https://cdn0.iconfinder.com/data/icons/large-glossy-icons/512/No.png'}` },
         'fields': [{
           'name': 'Name:',
           'value': `${u.user.username}#${u.user.discriminator}`
@@ -82,32 +83,39 @@ function guildLeave (u, bot) {
         {
           'name': 'ID:',
           'value': `${u.user.id}`
+        },
+        {
+          'name': 'Account created:',
+          'value': `${u.user.registeredAt}`
         }]
-      }
     }
-    logChannel.sendMessage(`📤 [\`${getHours()}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` left or was kicked from the server.`, false, data)
+    logChannel.sendMessage(`📤 [\`${hours}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` left or was kicked from the server.`, false, data)
   })
 }
 
 function guildBan (u, bot) {
   r.db('Guilds').table('all').filter({
-    'guildID': u.guildId
+    'guildID': u.guild.id
   }).run().then((lc) => {
     let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
     let minutes = getMinutes()
     minutes <= 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
-    logChannel.sendMessage(`🚫 [\`${getHours()}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` was banned from the server.`)
+    let hours = getHours()
+    hours <= 10 ? hours = `0${getHours()}` : hours = getHours()
+    logChannel.sendMessage(`🔨 [\`${hours}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` was banned from the server.`)
   })
 }
 
 function guildUnban (u, bot) {
   r.db('Guilds').table('all').filter({
-    'guildID': u.guildId
+    'guildID': u.guild.id
   }).run().then((lc) => {
     let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
     let minutes = getMinutes()
     minutes <= 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
-    logChannel.sendMessage(`🚨 [\`${getHours()}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` was unbanned from the server.`)
+    let hours = getHours()
+    hours <= 10 ? hours = `0${getHours()}` : hours = getHours()
+    logChannel.sendMessage(`🚨 [\`${hours}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` was unbanned from the server.`)
   })
 }
 
