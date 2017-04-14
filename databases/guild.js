@@ -73,9 +73,23 @@ function getLogChannel (msg, bot, cb) {
   })
 }
 
+function pingDatabase () {
+  try {
+    r.db('Guilds').table('all').run()
+  } catch (err) {
+    if (err.msg === 'None of the pools have an opened connection and failed to open a new one') {
+      console.log(`Failed to connect to the database, verify RethinkDB is running!\nError: ${err}`)
+    } else {
+      console.log(`Error occurred while connecting to the database:\n${err}`)
+    }
+    process.exit()
+  }
+}
+
 export {
     guildCreate,
     guildDelete,
     updateLogChannel,
-    getLogChannel
+    getLogChannel,
+    pingDatabase
 }

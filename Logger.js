@@ -6,9 +6,10 @@ const argv = require('yargs').argv
 
 import * as utils from './engine/utilities'
 import { Commands } from './engine/commands'
-import { guildCreate, guildDelete } from './databases/guild'
+import { guildCreate, guildDelete, pingDatabase } from './databases/guild'
 import { voiceJoin, voiceLeave } from './databases/voice'
 import { guildJoin, guildLeave, guildBan, guildUnban } from './databases/server'
+import { messageUpdate, messageDelete } from './databases/message'
 
 process.title = 'Logger'
 
@@ -17,6 +18,9 @@ if (argv.dev === true) {
 } else {
   console.log('Starting...')
 }
+
+// Verify RethinkDB is running
+pingDatabase()
 
 // Verify config exists
 utils.fileExists('./config.json')
@@ -99,4 +103,12 @@ bot.Dispatcher.on('GUILD_BAN_ADD', (u) => {
 
 bot.Dispatcher.on('GUILD_BAN_REMOVE', (u) => {
   guildUnban(u, bot)
+})
+
+bot.Dispatcher.on('MESSAGE_UPDATE', (m) => {
+  messageUpdate(m, bot)
+})
+
+bot.Dispatcher.on('MESSAGE_DELETE', (m) => {
+  messageDelete(m, bot)
 })
