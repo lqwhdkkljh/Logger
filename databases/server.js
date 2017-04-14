@@ -28,9 +28,9 @@ function guildJoin (m, bot) {
   }).run().then((lc) => {
     let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
     let minutes = getMinutes()
-    minutes <= 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
+    minutes < 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
     let hours = getHours()
-    hours <= 10 ? hours = `0${getHours()}` : hours = getHours()
+    hours < 10 ? hours = `0${getHours()}` : hours = getHours()
     let sevenDayCheck = getAccountDate(m)
     let data = {
       'title': `User joined`,
@@ -65,10 +65,10 @@ function guildLeave (u, bot) {
     'guildID': u.data.guild_id
   }).run().then((lc) => {
     let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
-    let hours = getHours()
-    hours <= 10 ? hours = `0${getHours()}` : hours = getHours()
     let minutes = getMinutes()
-    minutes <= 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
+    minutes < 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
+    let hours = getHours()
+    hours < 10 ? hours = `0${getHours()}` : hours = getHours()
 
     let data = {
         'title': `User left or was kicked`,
@@ -99,9 +99,9 @@ function guildBan (u, bot) {
   }).run().then((lc) => {
     let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
     let minutes = getMinutes()
-    minutes <= 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
+    minutes < 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
     let hours = getHours()
-    hours <= 10 ? hours = `0${getHours()}` : hours = getHours()
+    hours < 10 ? hours = `0${getHours()}` : hours = getHours()
     logChannel.sendMessage(`🔨 [\`${hours}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` was banned from the server.`)
   })
 }
@@ -112,9 +112,9 @@ function guildUnban (u, bot) {
   }).run().then((lc) => {
     let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
     let minutes = getMinutes()
-    minutes <= 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
+    minutes < 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
     let hours = getHours()
-    hours <= 10 ? hours = `0${getHours()}` : hours = getHours()
+    hours < 10 ? hours = `0${getHours()}` : hours = getHours()
     logChannel.sendMessage(`🚨 [\`${hours}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` was unbanned from the server.`)
   })
 }
