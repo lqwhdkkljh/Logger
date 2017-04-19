@@ -13,10 +13,14 @@ This bot currently supports setting a custom log channel on a per-server basis. 
 | ----- | -------- | ------------ |
 | User joins server | Embed | `GUILD_MEMBER_ADD` |
 | User leaves server | Embed | `GUILD_MEMBER_REMOVE` |
+| User gets a role | Embed | `GUILD_MEMBER_UPDATE` |
+| User loses a role | Embed | `GUILD_MEMBER_UPDATE` |
 | User gets banned | Message | `GUILD_BAN_ADD` |
 | User gets unbanned | Message | `GUILD_BAN_REMOVE` |
 | User joins voice channel | Message | `VOICE_CHANNEL_JOIN` |
 | User leaves voice channel | Message | `VOICE_CHANNEL_LEAVE` |
+| Channel created | Message | `CHANNEL_CREATE` |
+| Channel deleted | Message | `CHANNEL_DELETE` |
 
 ## Commands
 

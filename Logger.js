@@ -7,10 +7,12 @@ const argv = require('yargs').argv
 import * as utils from './engine/utilities'
 import { logger } from './engine/logger'
 import { Commands } from './engine/commands'
+import { channelCreated, channelDeleted } from './databases/channel'
 import { guildCreate, guildDelete, pingDatabase } from './databases/guild'
-import { voiceJoin, voiceLeave } from './databases/voice'
-import { guildJoin, guildLeave, guildBan, guildUnban } from './databases/server'
 import { messageUpdate, messageDelete } from './databases/message'
+import { userRoleAdded } from './databases/role'
+import { guildJoin, guildLeave, guildBan, guildUnban } from './databases/server'
+import { voiceJoin, voiceLeave } from './databases/voice'
 
 process.title = 'Logger'
 
@@ -77,6 +79,14 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
   }
 })
 
+bot.Dispatcher.on('CHANNEL_CREATE', (c) => {
+  channelCreated(c, bot)
+})
+
+bot.Dispatcher.on('CHANNEL_DELETE', (c) => {
+  channelDeleted(c, bot)
+})
+
 bot.Dispatcher.on('GUILD_CREATE', (g) => {
   guildCreate(g)
 })
@@ -99,6 +109,10 @@ bot.Dispatcher.on('GUILD_MEMBER_ADD', (m) => {
 
 bot.Dispatcher.on('GUILD_MEMBER_REMOVE', (u) => {
   guildLeave(u, bot)
+})
+
+bot.Dispatcher.on('GUILD_MEMBER_UPDATE', (g) => {
+  userRoleAdded(g, bot) // feel free to add more functions here for username/nick/whatever stuffs
 })
 
 bot.Dispatcher.on('GUILD_BAN_ADD', (u) => {
