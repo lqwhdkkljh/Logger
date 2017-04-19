@@ -10,7 +10,7 @@ import { Commands } from './engine/commands'
 import { channelCreated, channelDeleted } from './databases/channel'
 import { guildCreate, guildDelete, pingDatabase } from './databases/guild'
 import { messageUpdate, messageDelete } from './databases/message'
-import { userRoleAdded } from './databases/role'
+import { checkRoleChanges } from './databases/role'
 import { guildJoin, guildLeave, guildBan, guildUnban } from './databases/server'
 import { voiceJoin, voiceLeave } from './databases/voice'
 
@@ -112,7 +112,7 @@ bot.Dispatcher.on('GUILD_MEMBER_REMOVE', (u) => {
 })
 
 bot.Dispatcher.on('GUILD_MEMBER_UPDATE', (g) => {
-  userRoleAdded(g, bot) // feel free to add more functions here for username/nick/whatever stuffs
+  checkRoleChanges(g, bot) // feel free to add more functions here for username/nick/whatever stuffs
 })
 
 bot.Dispatcher.on('GUILD_BAN_ADD', (u) => {

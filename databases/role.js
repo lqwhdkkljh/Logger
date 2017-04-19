@@ -21,7 +21,7 @@ minutes < 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
 let hours = getHours()
 hours < 10 ? hours = `0${getHours()}` : hours = getHours()
 
-function userRoleAdded (g, bot) {
+function checkRoleChanges (g, bot) {
   r.db('Guilds').table('all').filter({
     'guildID': g.guild.id
   }).run().then((lc) => {
@@ -46,5 +46,5 @@ function userRoleAdded (g, bot) {
   })
 }
 export {
-  userRoleAdded
+  checkRoleChanges
 }
