@@ -1,5 +1,4 @@
 const Config = require('../config.json')
-import { logger } from '../engine/logger'
 
 const Dash = require('rethinkdbdash')
 let r = new Dash({
@@ -27,6 +26,9 @@ function messageUpdate (m, bot) {
     let current = m.message.content
     let edits = m.message.edits
     let before = edits[edits.length - 1].content
+    if (current === before) {
+      return
+    }
     logChannel.sendMessage(`❗ [\`${hours}:${minutes}\`] User \`${m.message.member.username}#${m.message.member.discriminator}\` edited their message in *${m.message.channel.name}*:\nBefore: ${before}\nAfter: ${current}`)
   })
 }

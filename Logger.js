@@ -26,7 +26,6 @@ pingDatabase()
 // Verify config exists
 utils.fileExists('./config.json')
 
-// If found, require
 const Config = require('./config.json')
 
 try {
@@ -46,27 +45,31 @@ bot.Dispatcher.on('GATEWAY_READY', x => {
 })
 
 bot.Dispatcher.on('MESSAGE_CREATE', y => {
-  let prefix = Config.core.prefix
-  if (y.message.content.startsWith(prefix)) {
-    if (y.message.author.bot || y.message.author.id === bot.User.id) {
+  if (y.message.author.bot || y.message.author.id === bot.User.id) { // Ignore
+  } else {
+    if (y.message.isPrivate) {
+      y.message.reply('This bot cannot be used in direct messages. Please invite me to a server and try again!')
     } else {
-      let cmdObj = y.message.content.substring(prefix.length).split(' ')[0].toLowerCase()
-      let keys = Object.keys(Commands)
-      let splitSuffix = y.message.content.substr(Config.core.prefix.length).split(' ')
-      let suffix = splitSuffix.slice(1, splitSuffix.length).join(' ')
+      let prefix = Config.core.prefix
+      if (y.message.content.startsWith(prefix)) {
+        let cmdObj = y.message.content.substring(prefix.length).split(' ')[0].toLowerCase()
+        let keys = Object.keys(Commands)
+        let splitSuffix = y.message.content.substr(Config.core.prefix.length).split(' ')
+        let suffix = splitSuffix.slice(1, splitSuffix.length).join(' ')
 
-      if (keys.includes(cmdObj)) {
-        try {
-          let botPerms = bot.User.permissionsFor(y.message.channel)
-          if (!botPerms.Text.READ_MESSAGES || !botPerms.Text.SEND_MESSAGES) {
-          } else {
-            Commands[cmdObj].func(y.message, suffix, bot)
-          }
-        } catch (err) {
-          if (argv.dev === true) {
-            logger.error(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
-          } else {
-            logger.error(`An error occurred while executing command '${cmdObj}'!`)
+        if (keys.includes(cmdObj)) {
+          try {
+            let botPerms = bot.User.permissionsFor(y.message.channel)
+            if (!botPerms.Text.READ_MESSAGES || !botPerms.Text.SEND_MESSAGES) { // Ignore
+            } else {
+              Commands[cmdObj].func(y.message, suffix, bot)
+            }
+          } catch (err) {
+            if (argv.dev === true) {
+              logger.error(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
+            } else {
+              logger.error(`An error occurred while executing command '${cmdObj}'!`)
+            }
           }
         }
       }
