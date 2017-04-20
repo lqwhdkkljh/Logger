@@ -4,7 +4,7 @@ export { bot }
 
 const argv = require('yargs').argv
 
-import * as utils from './engine/utilities'
+const Config = require('./config.json')
 import { logger } from './engine/logger'
 import { Commands } from './engine/commands'
 import { channelCreated, channelDeleted } from './databases/channel'
@@ -22,14 +22,6 @@ if (argv.dev === true) {
   logger.info('Starting...')
 }
 
-// Verify RethinkDB is running
-pingDatabase()
-
-// Verify config exists
-utils.fileExists('./config.json')
-
-const Config = require('./config.json')
-
 try {
   bot.connect({ token: Config.core.token })
 } catch (err) {
@@ -44,6 +36,7 @@ try {
 
 bot.Dispatcher.on('GATEWAY_READY', x => {
   logger.info(`Successfully logged in!\nUser: ${bot.User.username}\nID: ${bot.User.id}`)
+  pingDatabase() // Verify RethinkDB is running
 })
 
 bot.Dispatcher.on('MESSAGE_CREATE', y => {

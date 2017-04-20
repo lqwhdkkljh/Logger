@@ -19,8 +19,8 @@ let hours = getHours()
 hours < 10 ? hours = `0${getHours()}` : hours = getHours()
 
 function messageUpdate (m, bot) {
-  if (m.message.author.id === '283743460542906368') {
-    return
+  if (m.message.author.id === bot.User.id) {
+    return // Ignore edits on messages the bot itself posts
   }
   r.db('Guilds').table('all').filter({
     'guildID': m.message.guild.id
