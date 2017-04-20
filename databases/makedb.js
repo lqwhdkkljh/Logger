@@ -15,9 +15,9 @@ let r = new Dash({
 })
 
 createDB().then((e) => {
-  logger.error(e)
+  logger.info(e)
   createTable().then((e) => {
-    logger.error(e)
+    logger.info(e)
     cleanAndExit()
   }).catch(e => {
     logger.error(e.msg)
