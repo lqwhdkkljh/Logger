@@ -1,5 +1,7 @@
 const Commands = []
 import { guildCreate, updateLogChannel } from '../databases/guild'
+import { checkIfDev, checkIfAllowed } from './permissions'
+import * as lang from './lang'
 
 Commands.help = {
   name: 'help',
@@ -17,15 +19,25 @@ Commands.setchannel = {
   name: 'setchannel',
   info: 'Sets the log channel for your server!',
   func: function (msg, suffix) {
-    updateLogChannel(msg)
+    let isAllowed = checkIfAllowed(msg)
+    if (isAllowed === true) {
+      updateLogChannel(msg)
+    } else {
+      msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_ALLOWED}`)
+    }
   }
 }
 
 Commands.initguild = {
   name: 'initguild',
   info: 'Creates a database for the current guild.',
-  func: function (g) {
-    guildCreate(g)
+  func: function (msg, g) {
+    let isDev = checkIfDev(msg)
+    if (isDev === true) {
+      guildCreate(g)
+    } else {
+      msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_DEV}`)
+    }
   }
 }
 
