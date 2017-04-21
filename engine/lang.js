@@ -1,5 +1,5 @@
 const perms = {
-  NO_PERMISSION: 'sorry! You don\'t have permission to do this.', // Intentional lowercase for reply
+  NO_PERMISSION: 'You don\'t have permission to do this.',
   NOT_ALLOWED: 'Ask the server owner or a bot developer to perform this function.',
   NOT_OWNER: 'Ask the server owner to perform this function.',
   NOT_DEV: 'Ask one of my developers to perform this function.'

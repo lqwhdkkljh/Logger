@@ -63,11 +63,11 @@ Commands.info = {
         'url': 'https://images-ext-1.discordapp.net/.eJwFwdERgyAMANBdGIBgoBDcJgZo69nKAfrjubvvXepom5rVZ4zaZwBJf52-XfaWuFYt-w_45MGtA0YiREfWeBNpCt7AZHKQhV3x1nJ2OdmyMEVGwRLKi_Ra3-p-AFhtHvQ.PyEwIenKAFjWGFxIKcb6-_i167A?width=80&height=80'
       },
       'image': {
-        'url': 'https://avatars0.githubusercontent.com/u/18148938?v=3&s=180'
+        'url': 'https://avatars0.githubusercontent.com/u/18148938?v=3&s=100'
       },
       'fields': [{
         'name': 'Who am I?',
-        'value': 'I\'m a bot that can do some logging in your Discord server, for instance join and leave notifications!'
+        'value': 'I\'m a bot that can do some logging in your Discord server, for instance join and leave, message edits and more!'
       },
       {
         'name': 'Who created me?',
@@ -75,15 +75,29 @@ Commands.info = {
       },
       {
         'name': 'Where can I get help or give suggestions?',
-        'value': 'You can join my home server, LW\'s Lodge! There you can get help or suggest new features. Join here: https://discord.gg/NaN39J8'
+        'value': 'You can join my home server, LW\'s Lodge! There you can get help or suggest new features. Join ![here](https://discord.gg/NaN39J8)'
       },
       {
         'name': 'What if I want to contribute?',
         'value': 'My code is open source and improvements are appreciated! Check me out on GitHub: https://github.com/LWTechGaming/Logger'
-      }
-      ]
+      }]
     }
     msg.channel.sendMessage('Information about Logger:', false, data)
+  }
+}
+
+Commands.setstatus = {
+  name: 'setstatus',
+  info: 'Sets current playing game for the bot.',
+  func: function (msg, suffix, bot) {
+    let isDev = checkIfDev(msg)
+    if (isDev === true) {
+      let status = {name: `${suffix}`}
+      bot.User.setStatus('online', status)
+      msg.channel.sendMessage(`Set status to \`${suffix}\`!`)
+    } else {
+      msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_DEV}`)
+    }
   }
 }
 

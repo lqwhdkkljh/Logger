@@ -38,7 +38,7 @@ function guildJoin (m, bot) {
       'timestamp': new Date(),
       'color': sevenDayCheck[0],
       'footer': { 'icon_url': `${bot.User.avatarURL}`, 'text': 'Logger' },
-      'thumbnail': { 'url': `${bot.User.avatarURL}` },
+      'thumbnail': { 'url': `${m.member.avatarURL}` },
       'fields': [{
         'name': 'Name:',
         'value': `${m.member.username}#${m.member.discriminator}`

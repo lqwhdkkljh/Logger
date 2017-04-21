@@ -1,7 +1,8 @@
 {
     "core": {
         "token": "A Discord bot token",
-        "prefix": "%"
+        "prefix": "%",
+        "defaultstatus": "In development!"
     },
     "database": {
         "user": "admin",

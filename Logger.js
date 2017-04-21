@@ -37,6 +37,8 @@ try {
 bot.Dispatcher.on('GATEWAY_READY', x => {
   logger.info(`Successfully logged in!\nUser: ${bot.User.username}\nID: ${bot.User.id}`)
   pingDatabase() // Verify RethinkDB is running
+  let status = { name: Config.core.defaultstatus }
+  bot.User.setStatus('online', status)
 })
 
 bot.Dispatcher.on('MESSAGE_CREATE', y => {
@@ -63,7 +65,7 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
             if (argv.dev === true) {
               logger.error(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
             } else {
-              logger.error(`An error occurred while executing command '${cmdObj}'!`)
+              logger.error(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
             }
           }
         }

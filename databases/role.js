@@ -42,7 +42,7 @@ function checkRoleChanges (g, bot) {
         'value': g.rolesAdded.length !== 0 ? `${g.member.username}#${g.member.discriminator} (${g.member.id}) was given role *${g.rolesAdded[0].name}*.` : `Role *${g.rolesRemoved[0].name}* was revoked from ${g.member.username}#${g.member.discriminator} (${g.member.id}).`
       }]
     }
-    logChannel.sendMessage('\u200b', false, data) // you need message content.
+    logChannel.sendMessage(' ', false, data)
   })
 }
 export {
