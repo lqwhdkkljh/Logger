@@ -16,30 +16,33 @@ import {
   getHours
 } from '../engine/timeutils'
 
-let minutes = getMinutes()
-minutes < 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
-let hours = getHours()
-hours < 10 ? hours = `0${getHours()}` : hours = getHours()
+function getChannel (guildID, bot) {
+  return new Promise(function (resolve, reject) {
+    r.db('Guilds').table('all').filter({
+      'guildID': guildID
+    }).run().then((lc) => {
+      let logChannel = bot.Channels.get(lc[0].logchannel)
+      resolve(logChannel)
+    }).catch(e => {
+      reject(e)
+    })
+  })
+}
 
 function channelCreated (c, bot) {
-  r.db('Guilds').table('all').filter({
-    'guildID': c.channel.guild_id
-  }).run().then((lc) => {
-    let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
-    logChannel.sendMessage(`:new: [\`${hours}:${minutes}\`] ${c.channel.type === 2 ? 'Voice' : 'Text'} channel created: *${c.channel.name}* (${c.channel.id})`)
+  getChannel(c.channel.guild_id, bot).then((lc) => {
+    lc.sendMessage(`:new: [\`${getHours()}:${getMinutes()}\`] ${c.channel.type === 2 ? 'Voice' : 'Text'} channel created: *${c.channel.name}* (${c.channel.id})`)
   })
 }
 
 function channelDeleted (c, bot) {
-  r.db('Guilds').table('all').filter({
-    'guildID': c.data.guild_id
-  }).run().then((lc) => {
-    let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
-    logChannel.sendMessage(`:new: [\`${hours}:${minutes}\`] ${c.data.type === 2 ? 'Voice' : 'Text'} channel deleted: *${c.data.name}* (${c.channelId})`) // needs better emojis
+  getChannel(c.data.guild_id, bot).then((lc) => {
+    lc.sendMessage(`:x: [\`${getHours()}:${getMinutes()}\`] ${c.data.type === 2 ? 'Voice' : 'Text'} channel deleted: *${c.data.name}* (${c.channelId})`) // needs better emojis
   })
 }
 
 export {
-    channelCreated,
-    channelDeleted
+  channelCreated,
+  channelDeleted,
+  getChannel
 }

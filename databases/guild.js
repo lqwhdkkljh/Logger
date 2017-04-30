@@ -62,18 +62,6 @@ function updateLogChannel (msg) {
     })
 }
 
-function getLogChannel (msg, bot, cb) {
-  r.db('Guilds').table('all').filter({'guildID': msg.guild.id}).run().then((y) => {
-    if (y === null) {
-      logger.warn(`I don't have information for guild "${msg.guild.name}"`)
-    } else {
-      let id = y[0].logchannel
-      let logChannel = bot.Channels.get(`${id}`)
-      cb(logChannel)
-    }
-  })
-}
-
 function pingDatabase () {
   r.expr(1).run().then(response => {
     logger.info('Successfully connected to database!')
@@ -90,6 +78,5 @@ export {
     guildCreate,
     guildDelete,
     updateLogChannel,
-    getLogChannel,
     pingDatabase
 }

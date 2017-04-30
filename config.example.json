@@ -2,7 +2,7 @@
     "core": {
         "token": "A Discord bot token",
         "prefix": "%",
-        "defaultstatus": "In development!"
+        "defaultstatus": "in development!"
     },
     "database": {
         "user": "admin",

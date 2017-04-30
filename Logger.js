@@ -10,7 +10,7 @@ import { Commands } from './engine/commands'
 import { channelCreated, channelDeleted } from './databases/channel'
 import { guildCreate, guildDelete, pingDatabase } from './databases/guild'
 import { messageUpdate, messageDelete } from './databases/message'
-import { checkRoleChanges } from './databases/role'
+import { checkMemberUpdates } from './databases/role'
 import { guildJoin, guildLeave, guildBan, guildUnban } from './databases/server'
 import { voiceJoin, voiceLeave } from './databases/voice'
 
@@ -37,8 +37,7 @@ try {
 bot.Dispatcher.on('GATEWAY_READY', x => {
   logger.info(`Successfully logged in!\nUser: ${bot.User.username}\nID: ${bot.User.id}`)
   pingDatabase() // Verify RethinkDB is running
-  let status = { name: Config.core.defaultstatus }
-  bot.User.setStatus('online', status)
+  bot.User.setStatus('online', Config.core.defaultstatus)
 })
 
 bot.Dispatcher.on('MESSAGE_CREATE', y => {
@@ -107,7 +106,7 @@ bot.Dispatcher.on('GUILD_MEMBER_REMOVE', (u) => {
 })
 
 bot.Dispatcher.on('GUILD_MEMBER_UPDATE', (g) => {
-  checkRoleChanges(g, bot) // feel free to add more functions here for username/nick/whatever stuffs
+  checkMemberUpdates(g, bot)
 })
 
 bot.Dispatcher.on('GUILD_BAN_ADD', (u) => {

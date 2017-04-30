@@ -1,22 +1,5 @@
-const Config = require('../config.json')
-
-const Dash = require('rethinkdbdash')
-let r = new Dash({
-  user: Config.database.user,
-  password: Config.database.pass,
-  silent: true,
-  servers: [{
-    host: Config.database.host,
-    port: Config.database.port
-  }]
-})
-
 import { getMinutes, getHours } from '../engine/timeutils'
-
-let minutes = getMinutes()
-minutes < 10 ? minutes = `0${getMinutes()}` : minutes = getMinutes()
-let hours = getHours()
-hours < 10 ? hours = `0${getHours()}` : hours = getHours()
+import { getChannel } from './channel'
 
 function getAccountDate (m) {
   let createdAt = new Date() - new Date(m.member.createdAt)
@@ -28,17 +11,14 @@ function getAccountDate (m) {
 }
 
 function guildJoin (m, bot) {
-  r.db('Guilds').table('all').filter({
-    'guildID': m.member.guild_id
-  }).run().then((lc) => {
-    let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
+  getChannel(m.member.guild_id, bot).then((lc) => {
     let sevenDayCheck = getAccountDate(m)
     let data = {
-      'title': `User joined`,
+      'title': 'User Joined',
       'timestamp': new Date(),
       'color': sevenDayCheck[0],
       'footer': { 'icon_url': `${bot.User.avatarURL}`, 'text': 'Logger' },
-      'thumbnail': { 'url': `${m.member.avatarURL}` },
+      'thumbnail': { 'url': `${m.member.avatarURL === null ? 'https://cdn0.iconfinder.com/data/icons/large-glossy-icons/512/No.png' : m.member.avatarURL}` },
       'fields': [{
         'name': 'Name:',
         'value': `${m.member.username}#${m.member.discriminator}`
@@ -57,15 +37,12 @@ function guildJoin (m, bot) {
       }
       ]
     }
-    logChannel.sendMessage(`📥 [\`${hours}:${minutes}\`] User \`${m.member.username}#${m.member.discriminator}\` joined the server.`, false, data)
+    lc.sendMessage(`📥 [\`${getHours()}:${getMinutes()}\`] User \`${m.member.username}#${m.member.discriminator}\` joined the server.`, false, data)
   })
 }
 
 function guildLeave (u, bot) {
-  r.db('Guilds').table('all').filter({
-    'guildID': u.data.guild_id
-  }).run().then((lc) => {
-    let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
+  getChannel(u.data.guild_id, bot).then((lc) => {
     let data = {
       'title': `User left or was kicked`,
       'timestamp': new Date(),
@@ -85,25 +62,19 @@ function guildLeave (u, bot) {
         'value': `${u.user.registeredAt}`
       }]
     }
-    logChannel.sendMessage(`📤 [\`${hours}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` left or was kicked from the server.`, false, data)
+    lc.sendMessage(`📤 [\`${getHours()}:${getMinutes()}\`] User \`${u.user.username}#${u.user.discriminator}\` left or was kicked from the server.`, false, data)
   })
 }
 
 function guildBan (u, bot) {
-  r.db('Guilds').table('all').filter({
-    'guildID': u.guild.id
-  }).run().then((lc) => {
-    let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
-    logChannel.sendMessage(`🔨 [\`${hours}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` was banned from the server.`)
+  getChannel(u.guild.id, bot).then((lc) => {
+    lc.sendMessage(`🔨 [\`${getHours()}:${getMinutes()}\`] User \`${u.user.username}#${u.user.discriminator}\` was banned from the server.`)
   })
 }
 
 function guildUnban (u, bot) {
-  r.db('Guilds').table('all').filter({
-    'guildID': u.guild.id
-  }).run().then((lc) => {
-    let logChannel = bot.Channels.get(`${lc[0].logchannel}`)
-    logChannel.sendMessage(`🚨 [\`${hours}:${minutes}\`] User \`${u.user.username}#${u.user.discriminator}\` was unbanned from the server.`)
+  getChannel(u.guild.id, bot).then((lc) => {
+    lc.sendMessage(`🚨 [\`${getHours()}:${getMinutes()}\`] User \`${u.user.username}#${u.user.discriminator}\` was unbanned from the server.`)
   })
 }
 

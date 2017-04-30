@@ -20,7 +20,7 @@ Commands.setchannel = {
   info: 'Sets the log channel for your server!',
   func: function (msg, suffix) {
     let isAllowed = checkIfAllowed(msg)
-    if (isAllowed === true) {
+    if (isAllowed) {
       updateLogChannel(msg)
     } else {
       msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_ALLOWED}`)
@@ -33,7 +33,7 @@ Commands.initguild = {
   info: 'Creates a database for the current guild.',
   func: function (msg, g) {
     let isDev = checkIfDev(msg)
-    if (isDev === true) {
+    if (isDev) {
       guildCreate(g)
     } else {
       msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_DEV}`)
@@ -63,11 +63,11 @@ Commands.info = {
         'url': 'https://images-ext-1.discordapp.net/.eJwFwdERgyAMANBdGIBgoBDcJgZo69nKAfrjubvvXepom5rVZ4zaZwBJf52-XfaWuFYt-w_45MGtA0YiREfWeBNpCt7AZHKQhV3x1nJ2OdmyMEVGwRLKi_Ra3-p-AFhtHvQ.PyEwIenKAFjWGFxIKcb6-_i167A?width=80&height=80'
       },
       'image': {
-        'url': 'https://avatars0.githubusercontent.com/u/18148938?v=3&s=100'
+        'url': 'https://avatars0.githubusercontent.com/u/18148938?v=3&s=180'
       },
       'fields': [{
         'name': 'Who am I?',
-        'value': 'I\'m a bot that can do some logging in your Discord server, for instance join and leave, message edits and more!'
+        'value': 'I\'m a bot that can do some logging in your Discord server, for instance join and leave notifications!'
       },
       {
         'name': 'Who created me?',
@@ -75,12 +75,13 @@ Commands.info = {
       },
       {
         'name': 'Where can I get help or give suggestions?',
-        'value': 'You can join my home server, LW\'s Lodge! There you can get help or suggest new features. Join ![here](https://discord.gg/NaN39J8)'
+        'value': 'You can join my home server, LW\'s Lodge! There you can get help or suggest new features. Join [here](https://discord.gg/NaN39J8)!'
       },
       {
         'name': 'What if I want to contribute?',
         'value': 'My code is open source and improvements are appreciated! Check me out on GitHub: https://github.com/LWTechGaming/Logger'
-      }]
+      }
+      ]
     }
     msg.channel.sendMessage('Information about Logger:', false, data)
   }
@@ -91,9 +92,8 @@ Commands.setstatus = {
   info: 'Sets current playing game for the bot.',
   func: function (msg, suffix, bot) {
     let isDev = checkIfDev(msg)
-    if (isDev === true) {
-      let status = {name: `${suffix}`}
-      bot.User.setStatus('online', status)
+    if (isDev) {
+      bot.User.setStatus('online', suffix)
       msg.channel.sendMessage(`Set status to \`${suffix}\`!`)
     } else {
       msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_DEV}`)
