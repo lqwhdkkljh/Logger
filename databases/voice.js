@@ -3,9 +3,6 @@ import { getChannel } from './channel'
 
 function voiceJoin (v, bot) {
   getChannel(v.guildId, bot).then((lc) => {
-    if (v.newChannelId) {
-      return
-    }
     lc.sendMessage(`📞 [\`${getHours()}:${getMinutes()}\`] User \`${v.user.username}#${v.user.discriminator}\` has joined voice channel *${v.channel.name}*.`)
   })
 }
