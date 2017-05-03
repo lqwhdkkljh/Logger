@@ -78,4 +78,17 @@ function guildUnban (u, bot) {
   })
 }
 
-export { guildJoin, guildLeave, guildBan, guildUnban }
+function guildEmojiUpdate (e, bot) {
+  getChannel(e.guild.id, bot).then((lc) => {
+    let emojiChanges = e.getChanges()
+    let after = emojiChanges.after
+    let before = emojiChanges.before
+    if (before.length > after.length) {
+      lc.sendMessage(`:frowning: [\`${getHours()}:${getMinutes()}\`] Emoji removed: *${before[before.length - 1].name}* (${before[before.length - 1].id})`)
+    } else {
+      lc.sendMessage(`:smiley: [\`${getHours()}:${getMinutes()}\`] Emoji added: <:${after[after.length - 1].name}:${after[after.length - 1].id}> (${after[after.length - 1].id})`)
+    }
+  })
+}
+
+export { guildJoin, guildLeave, guildBan, guildUnban, guildEmojiUpdate }

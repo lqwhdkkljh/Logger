@@ -11,7 +11,7 @@ import { channelCreated, channelDeleted } from './databases/channel'
 import { guildCreate, guildDelete, pingDatabase } from './databases/guild'
 import { messageUpdate, messageDelete, messageDeleteBulk } from './databases/message'
 import { checkMemberUpdates } from './databases/role'
-import { guildJoin, guildLeave, guildBan, guildUnban } from './databases/server'
+import { guildJoin, guildLeave, guildBan, guildUnban, guildEmojiUpdate } from './databases/server'
 import { voiceJoin, voiceLeave } from './databases/voice'
 
 process.title = 'Logger'
@@ -95,6 +95,10 @@ bot.Dispatcher.on('VOICE_CHANNEL_JOIN', (v) => {
 
 bot.Dispatcher.on('VOICE_CHANNEL_LEAVE', (v) => {
   voiceLeave(v, bot)
+})
+
+bot.Dispatcher.on('GUILD_EMOJIS_UPDATE', (e) => {
+  guildEmojiUpdate(e, bot)
 })
 
 bot.Dispatcher.on('GUILD_MEMBER_ADD', (m) => {
