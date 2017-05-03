@@ -21,17 +21,22 @@ This bot currently supports setting a custom log channel on a per-server basis. 
 | User leaves voice channel | Message | `VOICE_CHANNEL_LEAVE` |
 | Channel created | Message | `CHANNEL_CREATE` |
 | Channel deleted | Message | `CHANNEL_DELETE` |
+| Message is edited | Message | `MESSAGE_UPDATE` |
+| Message is deleted | Message | `MESSAGE_DELETE` |
+| Multiple messages are deleted | Message | `MESSAGE_DELETE_BULK` |
 
 ## Commands
 
 **Command list:**
 
-| Command | Description |
-| ------- | ----------- |
-| %help \<command\> | Return description of a command specified. | 
-| %ping | Return pseudo-ping for the bot. |
-| %setchannel | Set the logging channel to the current channel. |
-| %info | Return some info on the bot. |
+| Command | Description | Role required |
+| ------- | ----------- | ------------- |
+| %help \<command\> | Return description of a command specified. | None |
+| %ping | Return pseudo-ping for the bot. | None |
+| %info | Return some info on the bot. | None |
+| %setchannel | Set the logging channel to the current channel. | Server Owner |
+| %setstatus \<text\> | Set current playing status. | Developer |
+| %setavatar \<filename\> | Set a new avatar. Needs file on local disk. | Developer |
 
 
 ## Maintainers
