@@ -11,9 +11,9 @@ function checkIfDev (msg) {
 
 function checkIfAllowed (msg) {
   let isDev = checkIfDev(msg)
-  if (isDev === true) {
+  if (isDev) {
     return true
-  } else if (msg.member.isOwner === true) {
+  } else if (msg.author.id === msg.guild.owner_id) {
     return true
   } else {
     return false
