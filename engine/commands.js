@@ -2,6 +2,8 @@ const Commands = []
 import { guildCreate, updateLogChannel } from '../databases/guild'
 import { checkIfDev, checkIfAllowed } from './permissions'
 import * as lang from './lang'
+import fs from 'fs'
+import { logger } from './logger'
 
 Commands.help = {
   name: 'help',
@@ -60,10 +62,10 @@ Commands.info = {
       'description': 'I\'m a simple Discord bot for logging different events in your Discord server.',
       'color': 6485980,
       'thumbnail': {
-        'url': 'https://images-ext-1.discordapp.net/.eJwFwdERgyAMANBdGIBgoBDcJgZo69nKAfrjubvvXepom5rVZ4zaZwBJf52-XfaWuFYt-w_45MGtA0YiREfWeBNpCt7AZHKQhV3x1nJ2OdmyMEVGwRLKi_Ra3-p-AFhtHvQ.PyEwIenKAFjWGFxIKcb6-_i167A?width=80&height=80'
+        'url': 'http://images.lwtechgaming.me/rE85Jmf.jpg'
       },
       'image': {
-        'url': 'https://avatars0.githubusercontent.com/u/18148938?v=3&s=180'
+        'url': 'https://avatars0.githubusercontent.com/u/18148938?v=3&s=100'
       },
       'fields': [{
         'name': 'Who am I?',
@@ -80,10 +82,9 @@ Commands.info = {
       {
         'name': 'What if I want to contribute?',
         'value': 'My code is open source and improvements are appreciated! Check me out on GitHub: https://github.com/LWTechGaming/Logger'
-      }
-      ]
+      }]
     }
-    msg.channel.sendMessage('Information about Logger:', false, data)
+    msg.channel.sendMessage(' ', false, data)
   }
 }
 
@@ -101,6 +102,23 @@ Commands.setstatus = {
   }
 }
 
-export {
-  Commands
+Commands.setavatar = {
+  name: 'setavatar',
+  info: 'Sets a new avatar for the bot.',
+  func: function (msg, suffix, bot) {
+    let isDev = checkIfDev(msg)
+    if (isDev) {
+      try {
+        bot.User.setAvatar(fs.readFileSync(suffix))
+        msg.channel.sendMessage(`Avatar updated!`)
+      } catch (err) {
+        msg.reply('an error occurred while setting the avatar! Check console for details.')
+        logger.error(err)
+      }
+    } else {
+      msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_DEV}`)
+    }
+  }
 }
+
+export { Commands }

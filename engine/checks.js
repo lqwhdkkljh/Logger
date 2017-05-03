@@ -25,7 +25,4 @@ function checkRoleChanges (rolesAdded, rolesRemoved, member) {
   }
 }
 
-export {
-  checkNick,
-  checkRoleChanges
-}
+export { checkNick, checkRoleChanges }

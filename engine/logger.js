@@ -11,6 +11,4 @@ let logger = new (winston.Logger)({
   exitOnError: true
 })
 
-export {
-    logger
-}
+export { logger }

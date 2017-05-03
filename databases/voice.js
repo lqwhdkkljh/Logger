@@ -18,7 +18,4 @@ function voiceLeave (v, bot) {
   })
 }
 
-export {
-  voiceJoin,
-  voiceLeave
-}
+export { voiceJoin, voiceLeave }

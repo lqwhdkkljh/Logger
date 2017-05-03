@@ -1,8 +1,5 @@
 import { logger } from '../engine/logger'
-import {
-  checkNick,
-  checkRoleChanges
-} from '../engine/checks'
+import { checkNick, checkRoleChanges } from '../engine/checks'
 
 import { getChannel } from './channel'
 
@@ -36,7 +33,4 @@ function checkMemberUpdates (m, bot) {
   })
 }
 
-export {
-  checkRoleChanges,
-  checkMemberUpdates
-}
+export { checkRoleChanges, checkMemberUpdates }

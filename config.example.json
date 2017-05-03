@@ -9,5 +9,10 @@
         "pass": "",
         "host": "localhost",
         "port": "28015"
+    },
+    "pastebin": {
+        "user": "Pastebin username",
+        "pass": "Pastebin password",
+        "devkey": "A Pastebin dev key"
     }
 }

@@ -78,9 +78,4 @@ function guildUnban (u, bot) {
   })
 }
 
-export {
-  guildJoin,
-  guildLeave,
-  guildBan,
-  guildUnban
-}
+export { guildJoin, guildLeave, guildBan, guildUnban }

@@ -74,9 +74,4 @@ function pingDatabase () {
   })
 }
 
-export {
-    guildCreate,
-    guildDelete,
-    updateLogChannel,
-    pingDatabase
-}
+export { guildCreate, guildDelete, updateLogChannel, pingDatabase }

@@ -11,10 +11,7 @@ let r = new Dash({
   }]
 })
 
-import {
-  getMinutes,
-  getHours
-} from '../engine/timeutils'
+import { getMinutes, getHours } from '../engine/timeutils'
 
 function getChannel (guildID, bot) {
   return new Promise(function (resolve, reject) {
@@ -41,8 +38,4 @@ function channelDeleted (c, bot) {
   })
 }
 
-export {
-  channelCreated,
-  channelDeleted,
-  getChannel
-}
+export { channelCreated, channelDeleted, getChannel }

@@ -9,14 +9,14 @@ import { logger } from './engine/logger'
 import { Commands } from './engine/commands'
 import { channelCreated, channelDeleted } from './databases/channel'
 import { guildCreate, guildDelete, pingDatabase } from './databases/guild'
-import { messageUpdate, messageDelete } from './databases/message'
+import { messageUpdate, messageDelete, messageDeleteBulk } from './databases/message'
 import { checkMemberUpdates } from './databases/role'
 import { guildJoin, guildLeave, guildBan, guildUnban } from './databases/server'
 import { voiceJoin, voiceLeave } from './databases/voice'
 
 process.title = 'Logger'
 
-if (argv.dev === true) {
+if (argv.dev) {
   logger.info('Starting in developer mode...')
 } else {
   logger.info('Starting...')
@@ -25,7 +25,7 @@ if (argv.dev === true) {
 try {
   bot.connect({ token: Config.core.token })
 } catch (err) {
-  if (argv.dev === true) {
+  if (argv.dev) {
     logger.error('Error while logging in: ')
     logger.error(err)
   } else {
@@ -61,7 +61,7 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
               Commands[cmdObj].func(y.message, suffix, bot)
             }
           } catch (err) {
-            if (argv.dev === true) {
+            if (argv.dev) {
               logger.error(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
             } else {
               logger.error(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
@@ -123,4 +123,8 @@ bot.Dispatcher.on('MESSAGE_UPDATE', (m) => {
 
 bot.Dispatcher.on('MESSAGE_DELETE', (m) => {
   messageDelete(m, bot)
+})
+
+bot.Dispatcher.on('MESSAGE_DELETE_BULK', (m) => {
+  messageDeleteBulk(m, bot)
 })

@@ -26,9 +26,4 @@ function getYear () {
   return years
 }
 
-export {
-  getMinutes,
-  getHours,
-  getDay,
-  getYear
-}
+export { getMinutes, getHours, getDay, getYear }
