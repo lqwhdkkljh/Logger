@@ -9,7 +9,7 @@
     "test": "standard && eslint Logger.js",
     "make-db": "babel-node databases/makedb.js",
     "fullinstall-win": "npm install && scripts\\install_globals_win.bat",
-    "fullinstall-linux": "sudo npm install && ./scripts/install_globals_linux.sh"
+    "fullinstall-linux": "sudo npm install && cd scripts && sudo chmod 770 ./install_globals_linux.sh && ./install_globals_linux.sh && cd .."
   },
   "repository": {
     "type": "git",

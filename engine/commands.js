@@ -1,9 +1,12 @@
 const Commands = []
+const Config = require('../config.json')
 import { guildCreate, updateLogChannel } from '../databases/guild'
 import { checkIfDev, checkIfAllowed } from './permissions'
 import * as lang from './lang'
 import fs from 'fs'
 import { logger } from './logger'
+
+const oauth = 'https://discordapp.com/oauth2/authorize?client_id=298822483060981760&scope=bot&permissions=1140968576'
 
 Commands.help = {
   name: 'help',
@@ -85,6 +88,14 @@ Commands.info = {
       }]
     }
     msg.channel.sendMessage(' ', false, data)
+  }
+}
+
+Commands.invite = {
+  name: 'invite',
+  info: 'Return the OAuth URL to invite me to your server!',
+  func: function (msg, bot) {
+    msg.channel.sendMessage(`🔗 ${oauth}`)
   }
 }
 
