@@ -1,5 +1,5 @@
 import Discordie from 'discordie'
-const bot = new Discordie()
+const bot = new Discordie({ autoReconnect: true })
 export { bot }
 
 const argv = require('yargs').argv
