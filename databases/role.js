@@ -8,12 +8,12 @@ function checkMemberUpdates (m, bot) {
     'color': 3404799,
     'timestamp': new Date(),
     'footer': {
-      'icon_url': `${bot.User.avatarURL}`,
+      'icon_url': `${bot.User.avatarURL === null ? 'https://cdn0.iconfinder.com/data/icons/large-glossy-icons/512/No.png' : bot.User.avatarURL}`,
       'text': `${bot.User.username}#${bot.User.discriminator}`
     },
     'author': {
       'name': `${m.member.username}#${m.member.discriminator}`,
-      'icon_url': `${m.member.avatarURL}`
+      'icon_url': `${m.member.avatarURL === null ? 'https://cdn0.iconfinder.com/data/icons/large-glossy-icons/512/No.png' : m.member.avatarURL}`
     },
     'fields': []
   }
