@@ -26,6 +26,7 @@
     "discordie": "^0.11.0",
     "promise": "^7.1.1",
     "rethinkdbdash": "^2.3.28",
+    "util": "^0.10.3",
     "winston": "^2.3.1",
     "yargs": "^7.0.2"
   },

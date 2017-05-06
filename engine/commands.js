@@ -56,6 +56,40 @@ Commands.ping = {
   }
 }
 
+Commands.eval = {
+  name: 'eval',
+  info: 'Evaluate javascript!',
+  func: function (msg, suffix, bot) {
+    let isDev = checkIfDev(msg)
+    if (isDev) {
+      try {
+        const util = require('util')
+        let evaluated = eval(suffix) // eslint-disable-line no-eval
+        let sendEval = util.inspect(evaluated, {
+          depth: 1
+        })
+        sendEval = sendEval.replace(new RegExp(Config.core.token, 'gi'), 'censored') // thanks wildbeast
+        sendEval = sendEval.replace(new RegExp(Config.pastebin.devkey, 'gi'), 'censored')
+        if (sendEval.length >= 2000) {
+          sendEval = sendEval.substr(0, 1990) + '(cont)'
+          msg.channel.sendMessage('```xl\n' + sendEval + '```').then((m) => {
+            m.edit('```xl\n' + sendEval + '```')
+          })
+        } else {
+          let init = new Date(msg.timestamp)
+          msg.channel.sendMessage('```xl\n' + sendEval + '```').then((m) => {
+            m.edit(`Eval done in \`${Math.floor(new Date(m.timestamp) - init)}\` ms!\n` + '```xl\n' + sendEval + '```')
+          })
+        }
+      } catch (e) {
+        msg.channel.sendMessage('Error:\n' + '```xl\n' + e + '```')
+      }
+    } else {
+      return
+    }
+  }
+}
+
 Commands.info = {
   name: 'info',
   info: 'Information about me!',

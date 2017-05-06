@@ -12,5 +12,8 @@
     },
     "pastebin": {
         "devkey": "A Pastebin dev key"
+    },
+    "permissions": {
+        "eval": ["you can put", "ids for eval here"]
     }
 }

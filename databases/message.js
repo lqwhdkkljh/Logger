@@ -58,5 +58,4 @@ at least one message will have time to get cached and that is enough for the fet
 Regardless, this issue exists and should be noted.
 */
 
-
 export { messageUpdate, messageDelete, messageDeleteBulk }
