@@ -86,7 +86,7 @@ Commands.eval = {
         msg.channel.sendMessage('Error:\n' + '```xl\n' + e + '```')
       }
     } else {
-      msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_DEV}`)
+      // Ignore
     }
   }
 }
