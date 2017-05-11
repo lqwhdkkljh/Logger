@@ -12,4 +12,14 @@ NOT_OWNER: Shorter formatting for the above which assumes that it's obvious for 
 NOT_DEV: Response for when a command needs to be performed by one of the bot's developers.
 */
 
-export { perms }
+const flags = {
+  FLAG_PROHIBIT_1: 'You cannot do that! This command is ',
+  FLAG_PROHIBIT_2: '. Hence I will not tell you about this command.'
+}
+
+/*
+FLAG_PROHIBIT_1: First part of when a command flag prevents execution.
+FLAG_PROHIBIT_2: Second part of above.
+*/
+
+export { perms, flags }

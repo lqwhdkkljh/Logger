@@ -2,8 +2,6 @@ import Discordie from 'discordie'
 const bot = new Discordie({ autoReconnect: true })
 export { bot }
 
-const argv = require('yargs').argv
-
 const Config = require('./config.json')
 import { logger } from './engine/logger'
 import { Commands } from './engine/commands'
@@ -16,21 +14,10 @@ import { voiceJoin, voiceLeave } from './databases/voice'
 
 process.title = 'Logger'
 
-if (argv.dev) {
-  logger.info('Starting in developer mode...')
-} else {
-  logger.info('Starting...')
-}
-
 try {
   bot.connect({ token: Config.core.token })
 } catch (err) {
-  if (argv.dev) {
-    logger.error('Error while logging in: ')
-    logger.error(err)
-  } else {
-    logger.error('An error occurred while logging in, invalid credentials?')
-  }
+  logger.error(`Error while logging in, invalid credentials? Error:\n${err}`)
   process.exit()
 }
 
@@ -41,7 +28,8 @@ bot.Dispatcher.on('GATEWAY_READY', x => {
 })
 
 bot.Dispatcher.on('MESSAGE_CREATE', y => {
-  if (y.message.author.bot || y.message.author.id === bot.User.id) { // Ignore
+  if (y.message.author.bot || y.message.author.id === bot.User.id) {
+    // Ignore
   } else {
     if (y.message.isPrivate) {
       y.message.reply('This bot cannot be used in direct messages. Please invite me to a server and try again!')
@@ -56,16 +44,23 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
         if (keys.includes(cmdObj)) {
           try {
             let botPerms = bot.User.permissionsFor(y.message.channel)
-            if (!botPerms.Text.READ_MESSAGES || !botPerms.Text.SEND_MESSAGES) { // Ignore
+            if (!botPerms.Text.READ_MESSAGES || !botPerms.Text.SEND_MESSAGES) {
+              // Ignore
             } else {
-              Commands[cmdObj].func(y.message, suffix, bot)
+              if (cmdObj === 'help' && !suffix) {
+                var cmdArray = []
+                for (let prop in Commands) {
+                  if (!Commands[prop].hasOwnProperty('hidden') && Commands[prop].hidden !== true) {
+                    cmdArray.push(`\`${Config.core.prefix}${Commands[prop].name}\` - ${Commands[prop].info}`)
+                  }
+                }
+                y.message.channel.sendMessage(`**Command list for Logger:**\n \n${cmdArray.join('\n')}\n \nPlease note that all commands may not be usable for you. Use \`%help <command>\` for more info.`)
+              } else {
+                Commands[cmdObj].func(y.message, suffix, bot)
+              }
             }
           } catch (err) {
-            if (argv.dev) {
               logger.error(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
-            } else {
-              logger.error(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
-            }
           }
         }
       }

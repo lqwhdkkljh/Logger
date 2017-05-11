@@ -5,7 +5,8 @@ import { generatePaste } from '../engine/paste'
 
 function messageUpdate (m, bot) {
   if (m.message === null || m.message.content === null) {
-  } // Omit
+    // Omit
+  }
   if (m.message.author.id === bot.User.id) {
     return
   }
@@ -24,9 +25,11 @@ function messageUpdate (m, bot) {
 
 function messageDelete (m, bot) {
   if (m.message === null) {
-  } // Omit
+    // Omit
+  }
   getChannel(m.message.guild.id, bot).then((lc) => {
-    if (lc.id === m.message.channel.id) { // Ignore
+    if (lc.id === m.message.channel.id) {
+      // Ignore
     } else {
       lc.sendMessage(`❌ [\`${getHours()}:${getMinutes()}\`] User \`${m.message.member.username}#${m.message.member.discriminator}\` deleted their message in *${m.message.channel.name}*:\n${m.message.content}`)
     }
@@ -35,9 +38,11 @@ function messageDelete (m, bot) {
 
 function messageDeleteBulk (m, bot) {
   if (m.messages === null) {
-  } // Omit
+    // Omit
+  }
   getChannel(m.messages[0].guild.id, bot).then((lc) => {
-    if (lc.id === m.messages[0].channel_id) { // Ignore
+    if (lc.id === m.messages[0].channel_id) {
+      // Ignore
     } else {
       let messageArray = m.messages.map((message) => {
         return message.content

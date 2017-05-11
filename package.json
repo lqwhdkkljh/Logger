@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "description": "A simple Discord bot for logging different events in your Discord server.",
   "scripts": {
-    "start": "nodemon --exec babel-node Logger.js",
-    "start-dev": "babel-node Logger.js --dev",
-    "test": "standard && eslint Logger.js",
+    "start": "babel-node Logger.js",
+    "start-dev": "nodemon --exec babel-node Logger.js",
+    "test": "standard && eslint **",
     "make-db": "babel-node databases/makedb.js",
     "fullinstall-win": "npm install && scripts\\install_globals_win.bat",
     "fullinstall-linux": "sudo npm install && cd scripts && sudo chmod 770 ./install_globals_linux.sh && ./install_globals_linux.sh && cd .."
@@ -27,8 +27,7 @@
     "promise": "^7.1.1",
     "rethinkdbdash": "^2.3.28",
     "util": "^0.10.3",
-    "winston": "^2.3.1",
-    "yargs": "^7.0.2"
+    "winston": "^2.3.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",

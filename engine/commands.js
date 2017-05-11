@@ -1,6 +1,6 @@
 const Commands = []
 const Config = require('../config.json')
-import { guildCreate, updateLogChannel } from '../databases/guild'
+import { updateLogChannel } from '../databases/guild'
 import { checkIfDev, checkIfAllowed } from './permissions'
 import * as lang from './lang'
 import fs from 'fs'
@@ -12,10 +12,21 @@ Commands.help = {
   name: 'help',
   info: 'Gets help about a command, if there is any.',
   func: function (msg, suffix) {
+    let isDev = checkIfDev(msg)
     if (!Commands[suffix]) {
       msg.channel.sendMessage('Command not found.')
     } else {
-      msg.channel.sendMessage(`${Commands[suffix].info}`)
+      if (isDev) {
+        msg.channel.sendMessage(`Name: **${Commands[suffix].name}**\nInformation: **${Commands[suffix].info}**\nRequired position: **${Commands[suffix].needs}**.`)
+      } else {
+        if (Commands[suffix].hasOwnProperty('hidden') && Commands[suffix].hidden === true) {
+          msg.channel.sendMessage('Command not found.')
+        } else if (Commands[suffix].hasOwnProperty('needs') && Commands[suffix].needs !== null) {
+          msg.channel.sendMessage(`Name: **${Commands[suffix].name}**\nInformation: **${Commands[suffix].info}**\nRequired position: **${Commands[suffix].needs}**.`)
+        } else {
+          msg.channel.sendMessage(`Name: **${Commands[suffix].name}**\nInformation: **${Commands[suffix].info}**`)
+        }
+      }
     }
   }
 }
@@ -23,25 +34,13 @@ Commands.help = {
 Commands.setchannel = {
   name: 'setchannel',
   info: 'Sets the log channel for your server!',
+  needs: 'Server Owner',
   func: function (msg, suffix) {
     let isAllowed = checkIfAllowed(msg)
     if (isAllowed) {
       updateLogChannel(msg)
     } else {
       msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_ALLOWED}`)
-    }
-  }
-}
-
-Commands.initguild = {
-  name: 'initguild',
-  info: 'Creates a database for the current guild.',
-  func: function (msg, g) {
-    let isDev = checkIfDev(msg)
-    if (isDev) {
-      guildCreate(g)
-    } else {
-      msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_DEV}`)
     }
   }
 }
@@ -58,7 +57,9 @@ Commands.ping = {
 
 Commands.eval = {
   name: 'eval',
-  info: 'Evaluate javascript!',
+  info: 'Evaluate JavaScript!', // Yes, Piero, casing does matter
+  needs: 'Bot Developer',
+  hidden: true,
   func: function (msg, suffix, bot) {
     let isDev = checkIfDev(msg)
     if (isDev) {
@@ -68,7 +69,7 @@ Commands.eval = {
         let sendEval = util.inspect(evaluated, {
           depth: 1
         })
-        sendEval = sendEval.replace(new RegExp(Config.core.token, 'gi'), 'censored') // thanks wildbeast
+        sendEval = sendEval.replace(new RegExp(Config.core.token, 'gi'), 'censored') // Thanks WildBeast
         sendEval = sendEval.replace(new RegExp(Config.pastebin.devkey, 'gi'), 'censored')
         if (sendEval.length >= 2000) {
           sendEval = sendEval.substr(0, 1990) + '(cont)'
@@ -85,7 +86,7 @@ Commands.eval = {
         msg.channel.sendMessage('Error:\n' + '```xl\n' + e + '```')
       }
     } else {
-      return
+      msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_DEV}`)
     }
   }
 }
@@ -136,6 +137,7 @@ Commands.invite = {
 Commands.setstatus = {
   name: 'setstatus',
   info: 'Sets current playing game for the bot.',
+  needs: 'Bot Developer',
   func: function (msg, suffix, bot) {
     let isDev = checkIfDev(msg)
     if (isDev) {
@@ -150,6 +152,7 @@ Commands.setstatus = {
 Commands.setavatar = {
   name: 'setavatar',
   info: 'Sets a new avatar for the bot.',
+  needs: 'Bot Developer',
   func: function (msg, suffix, bot) {
     let isDev = checkIfDev(msg)
     if (isDev) {
