@@ -60,7 +60,7 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
               }
             }
           } catch (err) {
-              logger.error(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
+            logger.error(`An error occurred while executing command '${cmdObj}', error returned:\n${err}`)
           }
         }
       }
