@@ -21,7 +21,7 @@ function guildCreate (g) {
       'logchannel': ''
     }).run().then((r) => {
       if (r.inserted === 1) {
-        logger.info(`Success while creating guild info for server '${g.guild.name}!`)
+        // all good, ignore
       } else {
         logger.error(`Something went wrong while creating guild info for server ${g.guild.name}!`)
       }
@@ -37,7 +37,7 @@ function guildDelete (g) {
       'guildID': g.data.id
     }).delete().run().then((d) => {
       if (d.deleted === 1) {
-        logger.info(`Successfully deleted guild information for ${g.data.name} (${g.data.id})`)
+        // all good, ignore
       }
     })
   } catch (e) {
