@@ -3,6 +3,8 @@
 
 Logger is a simple Discord bot for logging different events in your Discord server. It's coded in Node.js, using the discordie library to interact with the Discord API.
 
+Click this link to invite the bot to your server: http://logger.lwtechgaming.me
+
 ## Features
 
 This bot currently supports setting a custom log channel on a per-server basis. When a log channel is set it will then log events to that channel.

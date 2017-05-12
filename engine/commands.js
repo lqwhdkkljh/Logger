@@ -6,7 +6,7 @@ import * as lang from './lang'
 import fs from 'fs'
 import { logger } from './logger'
 
-const oauth = 'https://discordapp.com/oauth2/authorize?client_id=298822483060981760&scope=bot&permissions=1140968576'
+const oauth = 'http://logger.lwtechgaming.me'
 
 Commands.help = {
   name: 'help',
@@ -114,6 +114,10 @@ Commands.info = {
         'value': 'I was developed by LWTech#7575 and Piero#0905. I\'m written in JavaScript Node.js and my library is [discordie](http://qeled.github.io/discordie).'
       },
       {
+        'name': 'Can I get you into my own server?',
+        'value': 'Sure! Click [this](http://logger.lwtechgaming.me) to add me to your server.'
+      },
+      {
         'name': 'Where can I get help or give suggestions?',
         'value': 'You can join my home server, LW\'s Lodge! There you can get help or suggest new features. Join [here](https://discord.gg/NaN39J8)!'
       },
@@ -130,7 +134,7 @@ Commands.invite = {
   name: 'invite',
   info: 'Return the OAuth URL to invite me to your server!',
   func: function (msg, bot) {
-    msg.channel.sendMessage(`🔗 ${oauth}`)
+    msg.channel.sendMessage(`🔗 Invite me to your server: ${oauth}`)
   }
 }
 
