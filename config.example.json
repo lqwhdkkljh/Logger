@@ -1,0 +1,19 @@
+{
+    "core": {
+        "token": "A Discord bot token",
+        "prefix": "%",
+        "defaultstatus": "in development!"
+    },
+    "database": {
+        "user": "admin",
+        "pass": "",
+        "host": "localhost",
+        "port": "28015"
+    },
+    "pastebin": {
+        "devkey": "A Pastebin dev key"
+    },
+    "permissions": {
+        "eval": ["you can put", "ids for eval here"]
+    }
+}
