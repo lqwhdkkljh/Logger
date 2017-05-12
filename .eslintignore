@@ -1,5 +1,9 @@
 node_modules/*
-Logger.js
+rethinkdb_data/*
+scripts/*
+*.json
+*.png
 *.log
 *.md
 *.txt
+*.exe
