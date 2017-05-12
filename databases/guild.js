@@ -12,7 +12,7 @@ let r = new Dash({
   }]
 })
 
-function guildCreate (g) {
+function guildCreate (g, bot) {
   try {
     r.db('Guilds').table('all').insert({
       'guildID': g.guild.id,
@@ -21,7 +21,11 @@ function guildCreate (g) {
       'logchannel': ''
     }).run().then((r) => {
       if (r.inserted === 1) {
-        // all good, ignore
+        bot.Users.get(g.guild.owner_id).openDM().then((dm) => {
+          dm.sendMessage(`**Hello, thanks for inviting me to your server!**\n
+    I'll start logging events as soon as you set me a channel to do that in. Please browse to the channel you would like logging to be put in and type \`${Config.core.prefix}setchannel\` there.\n
+    When you've done that, you're all set! Have a good time :smile:`)
+        })
       } else {
         logger.error(`Something went wrong while creating guild info for server ${g.guild.name}!`)
       }
