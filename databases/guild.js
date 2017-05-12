@@ -51,7 +51,6 @@ function updateLogChannel (msg) {
   }).update({
     'logchannel': msg.channel.id}).run().then((u) => {
       if (u.replaced === 1) {
-        logger.info('Successfully updated logchannel!')
         msg.channel.sendMessage(`Alright ${msg.author.mention}, I will send messages to "${msg.channel.name}" (${msg.channel.id})!`)
       } else if (u.unchanged === 1) {
         msg.channel.sendMessage(`I'm already sending log messages to channel "${msg.channel.name}", ${msg.author.mention}!`)
