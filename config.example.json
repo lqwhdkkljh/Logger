@@ -15,5 +15,9 @@
     },
     "permissions": {
         "eval": ["you can put", "ids for eval here"]
+    },
+    "ids": {
+        "devRole": "DEVS ONLY - role ID",
+        "adminChannel": "DEVS ONLY - channel ID"
     }
 }

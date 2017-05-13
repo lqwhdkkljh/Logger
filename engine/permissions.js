@@ -1,5 +1,5 @@
 const Config = require('../config.json')
-const devRoleId = '304977386364076032' // LoggerDev
+const devRoleId = Config.ids.devRole
 
 function checkIfDev (msg) {
   function checkIds (id) {
