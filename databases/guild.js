@@ -1,6 +1,9 @@
 const Config = require('../config.json')
 import { logger } from '../engine/logger'
 
+import { bot } from '../Logger'
+const ac = bot.Channels.get(Config.ids.adminChannel)
+
 const Dash = require('rethinkdbdash')
 let r = new Dash({
   user: Config.database.user,
@@ -26,12 +29,15 @@ function guildCreate (g, bot) {
     I'll start logging events as soon as you set me a channel to do that in. Please browse to the channel you would like logging to be put in and type \`${Config.core.prefix}setchannel\` there.\n
     When you've done that, you're all set! Have a good time :smile:`)
         })
+        ac.sendMessage(`Joined server ${g.guild.name} (${g.guild.id}) and created guild info successfully.`)
       } else {
-        logger.error(`Something went wrong while creating guild info for server ${g.guild.name}!`)
+        logger.error(`Something went wrong while creating guild info for server ${g.guild.name}: DATA_CREATION_FAILED`)
+        ac.sendMessage(`Failed to create guild info for server ${g.guild.name} (${g.guild.id}), unknown error.`)
       }
     })
   } catch (e) {
-    logger.error(`An error occured while creating guild information! ${e}`)
+    logger.error(`An error occured while creating guild information for server "${g.guild.name}" (${g.guild.id}): \n${e}`)
+    ac.sendMessage(`Failed to create guild info for server ${g.guild.name} (${g.guild.id}), check console for details.`)
   }
 }
 
@@ -45,7 +51,8 @@ function guildDelete (g) {
       }
     })
   } catch (e) {
-    logger.error(`An error has occured while deleting guild! \n${e}`)
+    logger.error(`An error occured while deleting guild information for server ${g.guildId}: \n${e}`)
+    // I think this is enough, obsolete guild info is not harmful
   }
 }
 
@@ -59,8 +66,8 @@ function updateLogChannel (msg) {
       } else if (u.unchanged === 1) {
         msg.channel.sendMessage(`I'm already sending log messages to channel "${msg.channel.name}", ${msg.author.mention}!`)
       } else {
-        logger.error(`A problem has occurred, check it out!`)
-        logger.error(u)
+        logger.error(`An error occurred while updating log channel for server "${msg.guild.name}" (${msg.guild.id}):\n${u}`)
+        ac.sendMessage(`Failed to update log channel for server ${msg.guild.name} (${msg.guild.id}), check console for details.`)
       }
     })
 }
