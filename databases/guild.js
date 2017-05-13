@@ -1,8 +1,7 @@
 const Config = require('../config.json')
 import { logger } from '../engine/logger'
 
-import { bot } from '../Logger'
-const ac = bot.Channels.get(Config.ids.adminChannel)
+const ac = Config.ids.adminChannel
 
 const Dash = require('rethinkdbdash')
 let r = new Dash({
@@ -29,15 +28,15 @@ function guildCreate (g, bot) {
     I'll start logging events as soon as you set me a channel to do that in. Please browse to the channel you would like logging to be put in and type \`${Config.core.prefix}setchannel\` there.\n
     When you've done that, you're all set! Have a good time :smile:`)
         })
-        ac.sendMessage(`Joined server ${g.guild.name} (${g.guild.id}) and created guild info successfully.`)
+        bot.Channels.get(ac).sendMessage(`Joined server ${g.guild.name} (${g.guild.id}) and created guild info successfully.`)
       } else {
         logger.error(`Something went wrong while creating guild info for server ${g.guild.name}: DATA_CREATION_FAILED`)
-        ac.sendMessage(`Failed to create guild info for server ${g.guild.name} (${g.guild.id}), unknown error.`)
+        bot.Channels.get(ac).sendMessage(`Failed to create guild info for server ${g.guild.name} (${g.guild.id}), unknown error.`)
       }
     })
   } catch (e) {
     logger.error(`An error occured while creating guild information for server "${g.guild.name}" (${g.guild.id}): \n${e}`)
-    ac.sendMessage(`Failed to create guild info for server ${g.guild.name} (${g.guild.id}), check console for details.`)
+    bot.Channels.get(ac).sendMessage(`Failed to create guild info for server ${g.guild.name} (${g.guild.id}), check console for details.`)
   }
 }
 

@@ -48,7 +48,7 @@ function messageDeleteBulk (m, bot) {
         return message.content
       })
       lc.sendMessage(`❌ [\`${getHours()}:${getMinutes()}\`] Multiple messages were deleted from *${m.messages[0].channel.name}*:`)
-      generatePaste(lc, messageArray.join('\n'))
+      generatePaste(lc, messageArray.join('\n'), bot)
     }
   })
 }

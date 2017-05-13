@@ -3,10 +3,9 @@ import * as pastebin from 'better-pastebin'
 import { logger } from './logger'
 import { randstr } from './utils'
 
-import { bot } from '../Logger'
-const ac = bot.Channels.get(Config.ids.adminChannel)
+const ac = Config.ids.adminChannel
 
-function generatePaste (channel, content) {
+function generatePaste (channel, content, bot) {
   pastebin.setDevKey(Config.pastebin.devkey)
   pastebin.create({
     contents: content,
@@ -17,7 +16,7 @@ function generatePaste (channel, content) {
       channel.sendMessage(`${data}`)
     } else {
       logger.error(`An error occurred while creating a paste for deleted messages: ${data}`)
-      ac.sendMessage(`Encountered error while creating a paste for deleted messages, check console for details.`)
+      bot.Channels.get(ac).sendMessage(`Encountered error while creating a paste for deleted messages, check console for details.`)
     }
   })
 }
