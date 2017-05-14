@@ -1,4 +1,5 @@
 import winston from 'winston'
+const Config = require('../config.json')
 
 let logger = new (winston.Logger)({
   transports: [
@@ -11,4 +12,9 @@ let logger = new (winston.Logger)({
   exitOnError: true
 })
 
-export { logger }
+function pushAdminLog (msg, bot) {
+  let ac = Config.ids.adminChannel
+  bot.Channels.get(ac).sendMessage(msg)
+}
+
+export { logger, pushAdminLog }

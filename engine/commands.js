@@ -35,10 +35,10 @@ Commands.setchannel = {
   name: 'setchannel',
   info: 'Sets the log channel for your server!',
   needs: 'Server Owner',
-  func: function (msg, suffix) {
+  func: function (msg, suffix, bot) {
     let isAllowed = checkIfAllowed(msg)
     if (isAllowed) {
-      updateLogChannel(msg)
+      updateLogChannel(msg, bot)
     } else {
       msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_ALLOWED}`)
     }
