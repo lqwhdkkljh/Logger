@@ -1,7 +1,5 @@
 const Config = require('../config.json')
-import { logger } from '../engine/logger'
-
-const ac = Config.ids.adminChannel
+import { logger, pushAdminLog } from '../engine/logger'
 
 const Dash = require('rethinkdbdash')
 let r = new Dash({
@@ -28,15 +26,15 @@ function guildCreate (g, bot) {
     I'll start logging events as soon as you set me a channel to do that in. Please browse to the channel you would like logging to be put in and type \`${Config.core.prefix}setchannel\` there.\n
     When you've done that, you're all set! Have a good time :smile:`)
         })
-        bot.Channels.get(ac).sendMessage(`Joined server ${g.guild.name} (${g.guild.id}) and created guild info successfully.`)
+        pushAdminLog(`Joined server ${g.guild.name} (${g.guild.id}) and created guild info successfully.`, bot)
       } else {
         logger.error(`Something went wrong while creating guild info for server ${g.guild.name}: DATA_CREATION_FAILED`)
-        bot.Channels.get(ac).sendMessage(`Failed to create guild info for server ${g.guild.name} (${g.guild.id}), unknown error.`)
+        pushAdminLog(`Failed to create guild info for server ${g.guild.name} (${g.guild.id}), unknown error.`, bot)
       }
     })
   } catch (e) {
     logger.error(`An error occured while creating guild information for server "${g.guild.name}" (${g.guild.id}): \n${e}`)
-    bot.Channels.get(ac).sendMessage(`Failed to create guild info for server ${g.guild.name} (${g.guild.id}), check console for details.`)
+    pushAdminLog(`Failed to create guild info for server ${g.guild.name} (${g.guild.id}), check console for details.`, bot)
   }
 }
 
@@ -55,7 +53,7 @@ function guildDelete (g) {
   }
 }
 
-function updateLogChannel (msg) {
+function updateLogChannel (msg, bot) {
   r.db('Guilds').table('all').filter({
     'guildID': msg.guild.id
   }).update({
@@ -66,7 +64,7 @@ function updateLogChannel (msg) {
         msg.channel.sendMessage(`I'm already sending log messages to channel "${msg.channel.name}", ${msg.author.mention}!`)
       } else {
         logger.error(`An error occurred while updating log channel for server "${msg.guild.name}" (${msg.guild.id}):\n${u}`)
-        ac.sendMessage(`Failed to update log channel for server ${msg.guild.name} (${msg.guild.id}), check console for details.`)
+        pushAdminLog(`Failed to update log channel for server ${msg.guild.name} (${msg.guild.id}), check console for details.`, bot)
       }
     })
 }
