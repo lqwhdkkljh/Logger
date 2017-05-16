@@ -1,5 +1,6 @@
 import { getMinutes, getHours } from '../engine/timeutils'
 import { getChannel } from './channel'
+import { getLastResult } from '../databases/auditlogs'
 
 function getAccountDate (m) {
   let createdAt = new Date() - new Date(m.member.createdAt)
@@ -68,26 +69,32 @@ function guildLeave (u, bot) {
 
 function guildBan (u, bot) {
   getChannel(u.guild.id, bot).then((lc) => {
-    lc.sendMessage(`🔨 [\`${getHours()}:${getMinutes()}\`] User \`${u.user.username}#${u.user.discriminator}\` was banned from the server.`)
+    getLastResult(bot, u.guild.id).then((res) => {
+      lc.sendMessage(`🔨 [\`${getHours()}:${getMinutes()}\`] User **${res.perpetrator.username}#${res.perpetrator.discriminator}** banned *${u.user.username}#${u.user.discriminator}* (${res.target.id}) from the server for \`${res.reason}\`.`)
+    })
   })
 }
 
 function guildUnban (u, bot) {
   getChannel(u.guild.id, bot).then((lc) => {
-    lc.sendMessage(`🚨 [\`${getHours()}:${getMinutes()}\`] User \`${u.user.username}#${u.user.discriminator}\` was unbanned from the server.`)
+    getLastResult(bot, u.guild.id).then((res) => {
+      lc.sendMessage(`🚨 [\`${getHours()}:${getMinutes()}\`] User *${u.user.username}#${u.user.discriminator}* was unbanned from the guild by **${res.perpetrator.username}#${res.perpetrator.discriminator}**.`)
+    })
   })
 }
 
 function guildEmojiUpdate (e, bot) {
   getChannel(e.guild.id, bot).then((lc) => {
-    let emojiChanges = e.getChanges()
-    let after = emojiChanges.after
-    let before = emojiChanges.before
-    if (before.length > after.length) {
-      lc.sendMessage(`:frowning: [\`${getHours()}:${getMinutes()}\`] Emoji removed: *${before[before.length - 1].name}* (${before[before.length - 1].id})`)
-    } else {
-      lc.sendMessage(`:smiley: [\`${getHours()}:${getMinutes()}\`] Emoji added: <:${after[after.length - 1].name}:${after[after.length - 1].id}> (${after[after.length - 1].id})`)
-    }
+    getLastResult(bot, e.guild.id).then((res) => {
+      let emojiChanges = e.getChanges()
+      let after = emojiChanges.after
+      let before = emojiChanges.before
+      if (before.length > after.length) {
+        lc.sendMessage(`:frowning: [\`${getHours()}:${getMinutes()}\`] **${res.perpetrator.username}#${res.perpetrator.discriminator}** removed emoji: *${before[before.length - 1].name}* (${before[before.length - 1].id})`)
+      } else {
+        lc.sendMessage(`:smiley: [\`${getHours()}:${getMinutes()}\`] **${res.perpetrator.username}#${res.perpetrator.discriminator}** added an emoji: <:${after[after.length - 1].name}:${after[after.length - 1].id}> *${after[after.length - 1].name}* (${after[after.length - 1].id})`)
+      }
+    })
   })
 }
 

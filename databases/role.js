@@ -1,6 +1,4 @@
-import { logger } from '../engine/logger'
 import { checkNick, checkRoleChanges } from '../engine/checks'
-
 import { getChannel } from './channel'
 
 function checkMemberUpdates (m, bot) {
@@ -19,17 +17,22 @@ function checkMemberUpdates (m, bot) {
   }
   getChannel(m.guild.id, bot).then((lc) => {
     let memberChanges = m.getChanges()
-    let nickChange = checkNick(memberChanges, m.member, bot)
-    let roleChange = checkRoleChanges(m.rolesAdded, m.rolesRemoved, m.member)
-    if (nickChange) {
-      data.fields.push(nickChange)
-    }
-    if (roleChange) {
-      data.fields.push(roleChange)
-    }
-    lc.sendMessage(' ', false, data)
-  }).catch(e => {
-    logger.error(e)
+    checkNick(memberChanges, m.member, bot).then((nickChange) => {
+      if (nickChange) {
+        data.fields.push(nickChange)
+        lc.sendMessage(' ', false, data)
+      } else {
+        // ignore
+      }
+    })
+    checkRoleChanges(bot, m.rolesAdded, m.rolesRemoved, m.member).then((roleChanges) => {
+      if (roleChanges) {
+        data.fields.push(roleChanges)
+        lc.sendMessage(' ', false, data)
+      } else {
+        // ignore
+      }
+    })
   })
 }
 

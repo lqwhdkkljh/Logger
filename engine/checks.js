@@ -1,28 +1,38 @@
+import { getLastResult } from '../databases/auditlogs'
+
 function checkNick (changes, member, bot) {
-  if (changes.before.nick !== changes.after.nick) {
-    return {
-      'name': 'Nick change',
-      'value': `Before: ${changes.before.nick === null ? member.username : changes.before.nick} to ${changes.after.nick === null ? member.username : changes.after.nick}`
-    }
-  } else {
-    return false
-  }
+  return new Promise(function (resolve, reject) {
+    getLastResult(bot, member.guild.id).then((res) => {
+      if (changes.before.nick !== changes.after.nick) {
+        resolve({
+          'name': 'Nick change',
+          'value': `User ${res.perpetrator.mention} changed the nickname of *${res.target.username}* to ${res.target.nickMention}!`
+        })
+      } else {
+        resolve(null) // yes, this will be resolve instead of reject until we find a better way to deal with this problem
+      }
+    })
+  })
 }
 
-function checkRoleChanges (rolesAdded, rolesRemoved, member) {
-  if (rolesAdded.length > 0) {
-    return {
-      'name': 'Role change',
-      'value': `User ${member.mention} was given role *${rolesAdded[0].name}*. `
-    }
-  } else if (rolesRemoved.length > 0) {
-    return {
-      'name': 'Role change',
-      'value': `*${rolesRemoved[0].name}* was revoked from user ${member.mention}.`
-    }
-  } else {
-    return false
-  }
+function checkRoleChanges (bot, rolesAdded, rolesRemoved, member) {
+  return new Promise(function (resolve, reject) {
+    getLastResult(bot, member.guild.id).then((res) => {
+      if (rolesAdded.length > 0) {
+        resolve({
+          'name': 'Role change',
+          'value': `User ${res.target.nickMention} was given role *${rolesAdded[0].name}* by ${res.perpetrator.nickMention}. `
+        })
+      } else if (rolesRemoved.length > 0) {
+        resolve({
+          'name': 'Role change',
+          'value': `*${rolesRemoved[0].name}* was revoked from user ${res.target.nickMention} by ${res.perpetrator.nickMention}.`
+        })
+      } else {
+        resolve(null)
+      }
+    })
+  })
 }
 
 export { checkNick, checkRoleChanges }
