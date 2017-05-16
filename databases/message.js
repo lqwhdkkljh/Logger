@@ -1,5 +1,4 @@
 import * as fs from 'fs'
-import * as os from 'os'
 import { logger } from '../engine/logger'
 import { getMinutes, getHours } from '../engine/timeutils'
 import { getChannel } from './channel'
@@ -55,7 +54,7 @@ function messageDeleteBulk (m, bot) { // Keep in mind that if you get an incompl
           return message.content
         })
         getLastResult(bot, m.messages[0].guild.id).then((res) => {
-          let osType = `${os.type() === 'Windows_NT' ? `${__dirname.substr(0, __dirname.length - 9)}upload/` : `${__dirname.substr(0, __dirname.length - 7)}upload/`}`
+          let osType = `${__dirname.substr(0, __dirname.length - 9)}upload/`
           fs.writeFile(`${osType}bulk_delete_messages.txt`, messageArray.join('\n'), (err) => {
             if (err) logger.error(err)
             lc.uploadFile('upload/bulk_delete_messages.txt', 'upload/bulk_delete_messages.txt', `❌ [\`${getHours()}:${getMinutes()}\`] Multiple messages were deleted from <#${m.messages[0].channel.id}> by **${res.perpetrator.username}#${res.perpetrator.discriminator}** (${res.perpetrator.id}):`).then(() => {
