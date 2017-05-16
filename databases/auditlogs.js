@@ -9,7 +9,7 @@ function getLastResult (bot, guildID) {
     .end(function (err, resp) {
       if (err && err.status === 403) {
         bot.Guilds.get(guildID).owner.openDM().then((dm) => {
-          dm.sendMessage('I need permissions to view audit logs to operate fully.')
+          dm.sendMessage('Hey there, seems like I don\'t have permissions to view audit logs on your server. I need that to operate fully, please allow that for my role!')
         })
       } else {
         let lastEntry = resp.body.audit_log_entries[0]

@@ -1,4 +1,4 @@
-import * as fs from 'fs'
+import fs from 'fs'
 import { logger } from '../engine/logger'
 import { getMinutes, getHours } from '../engine/timeutils'
 import { getChannel } from './channel'
@@ -40,11 +40,11 @@ function messageDelete (m, bot) {
   }
 }
 
-function messageDeleteBulk (m, bot) { // Keep in mind that if you get an incomplete .txt file or only one message, it's because the bot hasn't cached all of the messages that were deleted.
+function messageDeleteBulk (m, bot) {
   if (!m.messages) {
     // Omit
   } else if (m.messages.length <= 1) {
-    // Not really a bulk delete with one message. See ^^^ for an explanation.
+    // Not really a bulk delete with one message, so omit. Check below for explanations.
   } else {
     getChannel(m.messages[0].guild.id, bot).then((lc) => {
       if (lc.id === m.messages[0].channel_id) {
@@ -62,7 +62,7 @@ function messageDeleteBulk (m, bot) { // Keep in mind that if you get an incompl
                 if (err) logger.error(err)
               })
             })
-          // otherwise, just output nothing.
+          // Omit if nothing
           })
         }
         )
@@ -70,6 +70,12 @@ function messageDeleteBulk (m, bot) { // Keep in mind that if you get an incompl
     })
   }
 }
+
+/*
+Note about the bulk message delete function: If you get an incomplete
+.txt file or only one message, it's because the bot hasn't cached all
+of the messages that were deleted.
+*/
 
 /*
 Something that should be noted for all event handlers relating to messages:
