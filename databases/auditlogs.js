@@ -15,7 +15,7 @@ function getLastResult (bot, guildID) {
         let lastEntry = resp.body.audit_log_entries[0]
         let target = bot.Users.get(lastEntry.target_id)
         let perpetrator = bot.Users.get(lastEntry.user_id)
-        if (lastEntry.action_type === 22) {
+        if (lastEntry.action_type === 22 || 20) {
           resolve({'perpetrator': perpetrator, 'target': target, 'reason': `${lastEntry.reason ? lastEntry.reason : 'no reason provided'}`})
         } else {
           resolve({'perpetrator': perpetrator, 'target': target})
