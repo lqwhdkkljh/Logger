@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/LWTechGaming/Logger#readme",
   "dependencies": {
-    "better-pastebin": "^0.3.0",
     "discordie": "^0.11.0",
+    "os": "^0.1.1",
     "promise": "^7.1.1",
     "rethinkdbdash": "^2.3.28",
     "util": "^0.10.3",

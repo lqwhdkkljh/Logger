@@ -1,7 +1,9 @@
+import * as fs from 'fs'
+import * as os from 'os'
 import { logger } from '../engine/logger'
 import { getMinutes, getHours } from '../engine/timeutils'
 import { getChannel } from './channel'
-import { generatePaste } from '../engine/paste'
+import { getLastResult } from '../databases/auditlogs'
 
 function messageUpdate (m, bot) {
   if (m.message === null || m.message.content === null) {
@@ -31,15 +33,19 @@ function messageDelete (m, bot) {
       if (lc.id === m.message.channel.id) {
         // Ignore
       } else {
-        lc.sendMessage(`❌ [\`${getHours()}:${getMinutes()}\`] User \`${m.message.member.username}#${m.message.member.discriminator}\` deleted their message in *${m.message.channel.name}*:\n${m.message.content}`)
+        getLastResult(bot, m.message.guild.id).then((res) => {
+          lc.sendMessage(`❌ [\`${getHours()}:${getMinutes()}\`] User **${res.perpetrator.username}#${res.perpetrator.discriminator}** deleted *${m.message.member.username}#${m.message.member.discriminator}* (${m.message.member.id})'s message in <#${m.message.channel.id}>:\n${m.message.content}`)
+        })
       }
     })
   }
 }
 
-function messageDeleteBulk (m, bot) {
-  if (m.messages === null) {
+function messageDeleteBulk (m, bot) { // Keep in mind that if you get an incomplete .txt file or only one message, it's because the bot hasn't cached all of the messages that were deleted.
+  if (!m.messages) {
     // Omit
+  } else if (m.messages.length <= 1) {
+    // Not really a bulk delete with one message. See ^^^ for an explanation.
   } else {
     getChannel(m.messages[0].guild.id, bot).then((lc) => {
       if (lc.id === m.messages[0].channel_id) {
@@ -48,8 +54,19 @@ function messageDeleteBulk (m, bot) {
         let messageArray = m.messages.map((message) => {
           return message.content
         })
-        lc.sendMessage(`❌ [\`${getHours()}:${getMinutes()}\`] Multiple messages were deleted from *${m.messages[0].channel.name}*:`)
-        generatePaste(lc, messageArray.join('\n'), bot)
+        getLastResult(bot, m.messages[0].guild.id).then((res) => {
+          let osType = `${os.type() === 'Windows_NT' ? `${__dirname.substr(0, __dirname.length - 9)}upload/` : `${__dirname.substr(0, __dirname.length - 7)}upload/`}`
+          fs.writeFile(`${osType}bulk_delete_messages.txt`, messageArray.join('\n'), (err) => {
+            if (err) logger.error(err)
+            lc.uploadFile('upload/bulk_delete_messages.txt', 'upload/bulk_delete_messages.txt', `❌ [\`${getHours()}:${getMinutes()}\`] Multiple messages were deleted from <#${m.messages[0].channel.id}> by **${res.perpetrator.username}#${res.perpetrator.discriminator}** (${res.perpetrator.id}):`).then(() => {
+              fs.unlink('upload/bulk_delete_messages.txt', (err) => {
+                if (err) logger.error(err)
+              })
+            })
+          // otherwise, just output nothing.
+          })
+        }
+        )
       }
     })
   }
