@@ -19,7 +19,7 @@ function getChannel (guildID, bot) {
     r.db('Guilds').table('all').filter({
       'guildID': guildID
     }).run().then((lc) => {
-      if (lc[0].logchannel === '' || lc[0].logchannel === undefined) {
+      if (lc[0].logchannel === '' || lc[0].logchannel === undefined || !lc) {
         // Ignore no logchannel responses
       } else {
         let logChannel = bot.Channels.get(lc[0].logchannel)
