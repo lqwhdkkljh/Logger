@@ -34,7 +34,7 @@ function getChannel (guildID, bot) {
 function channelCreated (c, bot) {
   getChannel(c.channel.guild_id, bot).then((lc) => {
     getLastResult(bot, c.channel.guild_id).then((res) => {
-      lc.sendMessage(`:new: [\`${getHours()}:${getMinutes()}\`] User **${res.perpetrator.username}#${res.perpetrator.discriminator}** created a ${c.channel.type === 2 ? 'voice' : 'text'} channel: *${c.channel.name}* (${c.channel.id})`)
+      lc.sendMessage(`:new: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` created a ${c.channel.type === 2 ? 'voice' : 'text'} channel: **${c.channel.name}** (${c.channel.id})`)
     })
   })
 }
@@ -42,7 +42,7 @@ function channelCreated (c, bot) {
 function channelDeleted (c, bot) {
   getChannel(c.data.guild_id, bot).then((lc) => {
     getLastResult(bot, c.data.guild_id).then((res) => {
-      lc.sendMessage(`:x: [\`${getHours()}:${getMinutes()}\`] User **${res.perpetrator.username}#${res.perpetrator.discriminator}** deleted a ${c.data.type === 2 ? 'voice' : 'text'} channel: *${c.data.name}* (${c.channelId})`) // needs better emojis
+      lc.sendMessage(`🚮 [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` deleted a ${c.data.type === 2 ? 'voice' : 'text'} channel: **${c.data.name}** (${c.channelId})`)
     })
   })
 }

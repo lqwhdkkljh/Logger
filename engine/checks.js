@@ -21,12 +21,12 @@ function checkRoleChanges (bot, rolesAdded, rolesRemoved, member) {
       if (rolesAdded.length > 0) {
         resolve({
           'name': 'Role change',
-          'value': `User ${res.target.nickMention} was given role *${rolesAdded[0].name}* by ${res.perpetrator.nickMention}. `
+          'value': `User ${res.target.nickMention} was given role **${rolesAdded[0].name}** by ${res.perpetrator.nickMention}. `
         })
       } else if (rolesRemoved.length > 0) {
         resolve({
           'name': 'Role change',
-          'value': `*${rolesRemoved[0].name}* was revoked from user ${res.target.nickMention} by ${res.perpetrator.nickMention}.`
+          'value': `Role **${rolesRemoved[0].name}** was revoked from user ${res.target.nickMention} by ${res.perpetrator.nickMention}.`
         })
       } else {
         resolve(null)
