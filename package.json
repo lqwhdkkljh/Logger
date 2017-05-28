@@ -9,7 +9,7 @@
     "test": "standard && eslint **",
     "make-db": "babel-node databases/makedb.js",
     "pm2-hotreload": "pm2 stop Logger && git pull && pm2 start Logger",
-    "pm2-prune": "pm2 stop Logger && pm2 reset Logger && pm2 flush Logger && pm2 start Logger",
+    "pm2-prune": "pm2 stop Logger && pm2 reset Logger && pm2 flush && pm2 start Logger",
     "fullinstall-win": "npm install && scripts\\install_globals_win.bat",
     "fullinstall-linux": "sudo npm install && cd scripts && sudo chmod 770 ./install_globals_linux.sh && ./install_globals_linux.sh && cd .."
   },
