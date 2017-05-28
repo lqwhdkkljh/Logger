@@ -2,12 +2,13 @@ import fs from 'fs'
 import { logger } from '../engine/logger'
 import { getMinutes, getHours } from '../engine/timeutils'
 import { getChannel } from './channel'
-import { getLastResult } from '../databases/auditlogs'
 
 function messageUpdate (m, bot) {
   if (m.message === null || m.message.content === null) {
     // Omit
   } else if (m.message.author.id === bot.User.id) {
+    // Omit
+  } else if (!m.message.guild) {
     // Omit
   } else {
     getChannel(m.message.guild.id, bot).then((lc) => {
@@ -32,9 +33,7 @@ function messageDelete (m, bot) {
       if (lc.id === m.message.channel.id) {
         // Ignore
       } else {
-        getLastResult(bot, m.message.guild.id).then((res) => {
-          lc.sendMessage(`❌ [\`${getHours()}:${getMinutes()}\`] User **${res.perpetrator.username}#${res.perpetrator.discriminator}** deleted *${m.message.member.username}#${m.message.member.discriminator}* (${m.message.member.id})'s message in <#${m.message.channel.id}>:\n${m.message.content}`)
-        })
+        lc.sendMessage(`❌ [\`${getHours()}:${getMinutes()}\`] Message sent by \`${m.message.author.username}#${m.message.author.discriminator}\` deleted in <#${m.message.channel.id}>:\n${m.message.content}`)
       }
     })
   }
@@ -53,19 +52,16 @@ function messageDeleteBulk (m, bot) {
         let messageArray = m.messages.map((message) => {
           return message.content
         })
-        getLastResult(bot, m.messages[0].guild.id).then((res) => {
-          let osType = `${__dirname.substr(0, __dirname.length - 9)}upload/`
-          fs.writeFile(`${osType}bulk_delete_messages.txt`, messageArray.join('\n'), (err) => {
-            if (err) logger.error(err)
-            lc.uploadFile('upload/bulk_delete_messages.txt', 'upload/bulk_delete_messages.txt', `❌ [\`${getHours()}:${getMinutes()}\`] Multiple messages were deleted from <#${m.messages[0].channel.id}> by **${res.perpetrator.username}#${res.perpetrator.discriminator}** (${res.perpetrator.id}):`).then(() => {
-              fs.unlink('upload/bulk_delete_messages.txt', (err) => {
-                if (err) logger.error(err)
-              })
+        let osType = `${__dirname.substr(0, __dirname.length - 9)}upload/`
+        fs.writeFile(`${osType}bulk_delete_messages.txt`, messageArray.join('\n'), (err) => {
+          if (err) logger.error(err)
+          lc.uploadFile('upload/bulk_delete_messages.txt', 'upload/bulk_delete_messages.txt', `❌ [\`${getHours()}:${getMinutes()}\`] Multiple messages were deleted from <#${m.messages[0].channel.id}>:`).then(() => {
+            fs.unlink('upload/bulk_delete_messages.txt', (err) => {
+              if (err) logger.error(err)
             })
-          // Omit if nothing
           })
-        }
-        )
+        // Omit if nothing
+        })
       }
     })
   }
