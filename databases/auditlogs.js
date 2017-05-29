@@ -13,6 +13,7 @@ function getLastResult (bot, guildID) {
         }).catch((e) => {
           // ignore
         })
+        reject(err)
       } else {
         let lastEntry = resp.body.audit_log_entries[0]
         let target = bot.Users.get(lastEntry.target_id)
