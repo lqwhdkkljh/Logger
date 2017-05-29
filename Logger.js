@@ -119,3 +119,7 @@ bot.Dispatcher.on('MESSAGE_DELETE', (m) => {
 bot.Dispatcher.on('MESSAGE_DELETE_BULK', (m) => {
   messageDeleteBulk(m, bot)
 })
+
+process.on('unhandledRejection', (reason, promise) => {
+  logger.debug(`There was an unhandled promise rejection at Promise ${promise}, reason was ${reason}`)
+})

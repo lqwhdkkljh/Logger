@@ -7,7 +7,7 @@ function getLastResult (bot, guildID) {
     .get(`https://discordapp.com/api/guilds/${guildID}/audit-logs`)
     .set(`Authorization`, `Bot ${Config.core.token}`)
     .end(function (err, resp) {
-      if (err && err.status === 403) {
+      if (err && err.status === 50001) {
         bot.Guilds.get(guildID).owner.openDM().then((dm) => {
           dm.sendMessage('Hey there, seems like I don\'t have permissions to view audit logs on your server. I need that to operate fully, please allow that for my role!')
         }).catch((e) => {

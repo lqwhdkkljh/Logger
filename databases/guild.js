@@ -24,6 +24,7 @@ function guildCreate (g, bot) {
         bot.Users.get(g.guild.owner_id).openDM().then((dm) => {
           dm.sendMessage(`**Hello, thanks for inviting me to your server!**\n
     I'll start logging events as soon as you set me a channel to do that in. Please browse to the channel you would like logging to be put in and type \`${Config.core.prefix}setchannel\` there.\n
+    In addition, make sure I have permissions to read Audit Logs or I may not function correctly!\n
     When you've done that, you're all set! Have a good time :smile:`)
         })
         pushAdminLog(`Joined server ${g.guild.name} (${g.guild.id}) and created guild info successfully.`, bot)
