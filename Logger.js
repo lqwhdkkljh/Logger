@@ -10,18 +10,17 @@ import { guildCreate, guildDelete, pingDatabase } from './databases/guild'
 import { messageUpdate, messageDelete, messageDeleteBulk } from './databases/message'
 import { checkMemberUpdates } from './databases/role'
 import { guildJoin, guildLeave, guildBan, guildUnban, guildEmojiUpdate } from './databases/server'
-import { voiceJoin, voiceLeave } from './databases/voice'
 
 process.title = 'Logger'
 
-try {
-  bot.connect({ token: Config.core.token })
-} catch (err) {
-  logger.error(`Error while logging in, invalid credentials? Error:\n${err}`)
-  process.exit()
-}
+bot.connect({ token: Config.core.token })
 
-bot.Dispatcher.on('GATEWAY_READY', x => {
+bot.Dispatcher.on('REQUEST_AUTH_LOGIN_ERROR', err => {
+  logger.error(`An error occurred while logging in, invalid credentials? Exiting...\n${err}`)
+  process.exit()
+})
+
+bot.Dispatcher.on('GATEWAY_READY', _ => {
   logger.info(`Successfully logged in!\nUser: ${bot.User.username}\nID: ${bot.User.id}`)
   pingDatabase() // Verify RethinkDB is running
   bot.User.setStatus('online', Config.core.defaultstatus)
@@ -83,14 +82,6 @@ bot.Dispatcher.on('GUILD_CREATE', (g) => {
 
 bot.Dispatcher.on('GUILD_DELETE', (g) => {
   guildDelete(g)
-})
-
-bot.Dispatcher.on('VOICE_CHANNEL_JOIN', (v) => {
-  voiceJoin(v, bot)
-})
-
-bot.Dispatcher.on('VOICE_CHANNEL_LEAVE', (v) => {
-  voiceLeave(v, bot)
 })
 
 bot.Dispatcher.on('GUILD_EMOJIS_UPDATE', (e) => {
