@@ -71,6 +71,8 @@ function guildBan (u, bot) {
   getChannel(u.guild.id, bot).then((lc) => {
     getLastResult(bot, u.guild.id).then((res) => {
       lc.sendMessage(`🔨 [\`${getHours()}:${getMinutes()}\`] User **${res.perpetrator.username}#${res.perpetrator.discriminator}** banned *${u.user.username}#${u.user.discriminator}* (${res.target.id}) from the server for \`${res.reason}\`.`)
+    }).catch(_ => {
+      // Ignore
     })
   })
 }
@@ -79,6 +81,8 @@ function guildUnban (u, bot) {
   getChannel(u.guild.id, bot).then((lc) => {
     getLastResult(bot, u.guild.id).then((res) => {
       lc.sendMessage(`🚨 [\`${getHours()}:${getMinutes()}\`] User *${u.user.username}#${u.user.discriminator}* was unbanned from the server by **${res.perpetrator.username}#${res.perpetrator.discriminator}**.`)
+    }).catch(_ => {
+      // Ignore
     })
   })
 }
@@ -94,6 +98,8 @@ function guildEmojiUpdate (e, bot) {
       } else {
         lc.sendMessage(`:smiley: [\`${getHours()}:${getMinutes()}\`] **${res.perpetrator.username}#${res.perpetrator.discriminator}** added an emoji: <:${after[after.length - 1].name}:${after[after.length - 1].id}> *${after[after.length - 1].name}* (${after[after.length - 1].id})`)
       }
+    }).catch(_ => {
+      // Ignore
     })
   })
 }

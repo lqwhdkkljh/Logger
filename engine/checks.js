@@ -11,6 +11,8 @@ function checkNick (changes, member, bot) {
       } else {
         resolve(null) // yes, this will be resolve instead of reject until we find a better way to deal with this problem
       }
+    }).catch(_ => {
+      // Ignore
     })
   })
 }
@@ -31,6 +33,8 @@ function checkRoleChanges (bot, rolesAdded, rolesRemoved, member) {
       } else {
         resolve(null)
       }
+    }).catch(_ => {
+      // Ignore
     })
   })
 }

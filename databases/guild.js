@@ -69,6 +69,20 @@ function updateLogChannel (msg, bot) {
     })
 }
 
+function removeLogChannel (msg, bot) {
+  r.db('Guilds').table('all').filter({
+    'guildID': msg.guild.id
+  }).update({
+    'logchannel': ''}).run().then((u) => {
+      if (u.replaced === 1) {
+        msg.channel.sendMessage(`Alright ${msg.author.mention}, your log channel has been cleared!`)
+      } else {
+        logger.error(`An error occurred while removing log channel for server "${msg.guild.name}" (${msg.guild.id}):\n${u}`)
+        pushAdminLog(`Failed to remove log channel for server ${msg.guild.name} (${msg.guild.id}), check console for details.`, bot)
+      }
+    })
+}
+
 function pingDatabase () {
   r.expr(1).run().then(response => {
     logger.info('Successfully connected to database!')
@@ -81,4 +95,4 @@ function pingDatabase () {
   })
 }
 
-export { guildCreate, guildDelete, updateLogChannel, pingDatabase }
+export { guildCreate, guildDelete, updateLogChannel, removeLogChannel, pingDatabase }

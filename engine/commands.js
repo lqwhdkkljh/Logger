@@ -1,6 +1,6 @@
 const Commands = []
 const Config = require('../config.json')
-import { updateLogChannel } from '../databases/guild'
+import { updateLogChannel, removeLogChannel } from '../databases/guild'
 import { checkIfDev, checkIfAllowed } from './permissions'
 import * as lang from './lang'
 import fs from 'fs'
@@ -39,6 +39,20 @@ Commands.setchannel = {
     let isAllowed = checkIfAllowed(msg)
     if (isAllowed) {
       updateLogChannel(msg, bot)
+    } else {
+      msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_ALLOWED}`)
+    }
+  }
+}
+
+Commands.clearchannel = {
+  name: 'clearchannel',
+  info: 'Clears the log channel for the server.',
+  needs: 'Server Owner',
+  func: function (msg, suffix, bot) {
+    let isAllowed = checkIfAllowed(msg)
+    if (isAllowed) {
+      removeLogChannel(msg, bot)
     } else {
       msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_ALLOWED}`)
     }
