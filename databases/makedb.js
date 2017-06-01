@@ -1,6 +1,6 @@
-const Config = require('../config.json')
 import { logger } from '../engine/logger'
 
+const Config = require('../config.json')
 const Promise = require('promise')
 const Dash = require('rethinkdbdash')
 

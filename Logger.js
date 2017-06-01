@@ -1,8 +1,4 @@
 import Discordie from 'discordie'
-const bot = new Discordie({ autoReconnect: true })
-export { bot }
-
-const Config = require('./config.json')
 import { logger } from './engine/logger'
 import { Commands } from './engine/commands'
 import { channelCreated, channelDeleted } from './databases/channel'
@@ -10,6 +6,10 @@ import { guildCreate, guildDelete, pingDatabase } from './databases/guild'
 import { messageUpdate, messageDelete, messageDeleteBulk } from './databases/message'
 import { checkMemberUpdates } from './databases/role'
 import { guildJoin, guildLeave, guildBan, guildUnban, guildEmojiUpdate } from './databases/server'
+
+const Config = require('./config.json')
+const bot = new Discordie({ autoReconnect: true })
+export { bot }
 
 process.title = 'Logger'
 

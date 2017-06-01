@@ -1,5 +1,6 @@
-const Config = require('../config.json')
 import * as request from 'superagent'
+
+const Config = require('../config.json')
 
 function getLastResult (bot, guildID) {
   return new Promise(function (resolve, reject) {

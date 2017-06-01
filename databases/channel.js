@@ -1,6 +1,7 @@
-const Config = require('../config.json')
 import { getLastResult } from '../databases/auditlogs'
+import { getMinutes, getHours } from '../engine/timeutils'
 
+const Config = require('../config.json')
 const Dash = require('rethinkdbdash')
 let r = new Dash({
   user: Config.database.user,
@@ -11,8 +12,6 @@ let r = new Dash({
     port: Config.database.port
   }]
 })
-
-import { getMinutes, getHours } from '../engine/timeutils'
 
 function getChannel (guildID, bot) {
   return new Promise(function (resolve, reject) {

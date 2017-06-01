@@ -1,11 +1,11 @@
-const Commands = []
-const Config = require('../config.json')
-import { updateLogChannel, removeLogChannel } from '../databases/guild'
+import { updateLogChannel, removeLogChannel, checkAndReplace } from '../databases/guild'
 import { checkIfDev, checkIfAllowed } from './permissions'
 import * as lang from './lang'
 import fs from 'fs'
 import { logger } from './logger'
 
+const Commands = []
+const Config = require('../config.json')
 const oauth = 'http://logger.lwtechgaming.me'
 
 Commands.help = {
@@ -66,6 +66,18 @@ Commands.ping = {
     msg.channel.sendMessage('Pong!').then((m) => {
       m.edit(`Pong! Pseudo-ping: ${Math.floor(new Date(m.timestamp) - new Date(msg.timestamp))} MS`)
     })
+  }
+}
+
+Commands.recoverguilds = {
+  name: 'recoverguilds',
+  info: 'Tries to replace missing guild documents.',
+  needs: 'Bot Developer',
+  func: function (msg, suffix, bot) {
+    bot.Guilds.map((g) => {
+      checkAndReplace(g, bot)
+    })
+    msg.channel.sendMessage(`Alright, ${msg.author.mention}. Check the logs to see the results (too long)`)
   }
 }
 
