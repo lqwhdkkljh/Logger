@@ -25,7 +25,7 @@ bot.Dispatcher.on('GATEWAY_READY', _ => {
   logger.info(`Successfully logged in!\nUser: ${bot.User.username}\nID: ${bot.User.id}`)
   pingDatabase() // Verify RethinkDB is running
   bot.User.setStatus('online', Config.core.defaultstatus)
-  // postStats(bot.Guilds.length, bot)
+  postStats(bot.Guilds.length, bot)
 })
 
 bot.Dispatcher.on('MESSAGE_CREATE', y => {
