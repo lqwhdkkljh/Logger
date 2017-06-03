@@ -35,8 +35,7 @@ function guildJoin (m, bot) {
       {
         'name': 'Older than 7 days?',
         'value': sevenDayCheck[1]
-      }
-      ]
+      }]
     }
     lc.sendMessage(`📥 [\`${getHours()}:${getMinutes()}\`] User \`${m.member.username}#${m.member.discriminator}\` joined the server.`, false, data)
   })

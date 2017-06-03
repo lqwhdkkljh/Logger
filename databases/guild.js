@@ -1,6 +1,6 @@
-const Config = require('../config.json')
 import { logger, pushAdminLog } from '../engine/logger'
 
+const Config = require('../config.json')
 const Dash = require('rethinkdbdash')
 let r = new Dash({
   user: Config.database.user,
@@ -11,6 +11,35 @@ let r = new Dash({
     port: Config.database.port
   }]
 })
+
+function checkAndReplace (g, bot) {
+  r.db('Guilds').table('all').filter({'guildID': g.id}).then((r) => {
+    if (r[0]) {
+          // ignore
+    } else {
+      singleInsert(g, bot)
+    }
+  })
+}
+
+function singleInsert (g, bot) {
+  try {
+    r.db('Guilds').table('all').insert({
+      'guildID': g.id,
+      'guildName': g.name,
+      'ownerID': g.owner_id,
+      'logchannel': ''
+    }).run().then((r) => {
+      if (r.inserted === 1) {
+        logger.info(`Inserted ${g.name} (${g.id}) to the DB.`)
+      } else {
+        logger.error(r)
+      }
+    })
+  } catch (e) {
+    logger.error(`error:\n${e}`)
+  }
+}
 
 function guildCreate (g, bot) {
   try {
@@ -96,4 +125,4 @@ function pingDatabase () {
   })
 }
 
-export { guildCreate, guildDelete, updateLogChannel, removeLogChannel, pingDatabase }
+export { guildCreate, guildDelete, updateLogChannel, removeLogChannel, pingDatabase, checkAndReplace }
