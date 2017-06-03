@@ -25,7 +25,11 @@ bot.Dispatcher.on('GATEWAY_READY', _ => {
   logger.info(`Successfully logged in!\nUser: ${bot.User.username}\nID: ${bot.User.id}`)
   pingDatabase() // Verify RethinkDB is running
   bot.User.setStatus('online', Config.core.defaultstatus)
-  postStats(bot.Guilds.length, bot)
+  if (Config.stats.dbots.enable === true) {
+    postStats(bot.Guilds.length, bot)
+  } else {
+    // Omit
+  }
 })
 
 bot.Dispatcher.on('MESSAGE_CREATE', y => {
@@ -126,5 +130,9 @@ process.on('unhandledRejection', (reason, promise) => {
   logger.debug(`There was an unhandled promise rejection at Promise ${promise}, reason was ${reason}`)
 })
 
-// Post stats to Discord Bots every 3 hours
-setInterval(_ => { postStats(bot.Guilds.length, bot) }, 10800000)
+if (Config.stats.dbots.enable === true) {
+  // Post stats to Discord Bots every 3 hours
+  setInterval(_ => { postStats(bot.Guilds.length, bot) }, 10800000)
+} else {
+  // Omit
+}

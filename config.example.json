@@ -19,6 +19,7 @@
     },
     "stats": {
         "dbots": {
+            "enable": false,
             "token": "Discord Bots API token",
             "bot_id": "Discord Bots bot ID"
         }
