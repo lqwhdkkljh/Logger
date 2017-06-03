@@ -6,6 +6,7 @@ import { guildCreate, guildDelete, pingDatabase } from './databases/guild'
 import { messageUpdate, messageDelete, messageDeleteBulk } from './databases/message'
 import { checkMemberUpdates } from './databases/role'
 import { guildJoin, guildLeave, guildBan, guildUnban, guildEmojiUpdate } from './databases/server'
+import { postStats } from './engine/stats'
 
 const Config = require('./config.json')
 const bot = new Discordie({ autoReconnect: true })
@@ -24,6 +25,7 @@ bot.Dispatcher.on('GATEWAY_READY', _ => {
   logger.info(`Successfully logged in!\nUser: ${bot.User.username}\nID: ${bot.User.id}`)
   pingDatabase() // Verify RethinkDB is running
   bot.User.setStatus('online', Config.core.defaultstatus)
+  // postStats(bot.Guilds.length, bot)
 })
 
 bot.Dispatcher.on('MESSAGE_CREATE', y => {
@@ -123,3 +125,6 @@ bot.Dispatcher.on('MESSAGE_DELETE_BULK', (m) => {
 process.on('unhandledRejection', (reason, promise) => {
   logger.debug(`There was an unhandled promise rejection at Promise ${promise}, reason was ${reason}`)
 })
+
+// Post stats to Discord Bots every 3 hours
+setInterval(_ => { postStats(bot.Guilds.length, bot) }, 10800000)

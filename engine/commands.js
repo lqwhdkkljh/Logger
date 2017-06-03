@@ -3,6 +3,7 @@ import { checkIfDev, checkIfAllowed } from './permissions'
 import * as lang from './lang'
 import fs from 'fs'
 import { logger } from './logger'
+import { getBotInfo } from './stats'
 
 const Commands = []
 const Config = require('../config.json')
@@ -123,6 +124,7 @@ Commands.info = {
   func: function (msg) {
     let data = {
       'title': 'Hey there, I\'m Logger!',
+      'timestamp': new Date(),
       'description': 'I\'m a simple Discord bot for logging different events in your Discord server.',
       'color': 6485980,
       'thumbnail': {
@@ -133,7 +135,7 @@ Commands.info = {
       },
       'fields': [{
         'name': 'Who am I?',
-        'value': 'I\'m a bot that can do some logging in your Discord server, for instance join and leave notifications!'
+        'value': 'I\'m a bot that can do some logging in your Discord server, for instance join and leave notifications, ban and unban and so forth!'
       },
       {
         'name': 'Who created me?',
@@ -195,6 +197,55 @@ Commands.setavatar = {
       }
     } else {
       msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_DEV}`)
+    }
+  }
+}
+
+Commands.botinfo = {
+  name: 'botinfo',
+  info: 'Gets information of a bot from Discord Bots.',
+  needs: 'Bot Developer',
+  hidden: true,
+  func: function (msg, suffix, bot) {
+    if (!suffix) {
+      msg.reply('Please provide an ID to get information for!')
+    } else {
+      let isDev = checkIfDev(msg)
+      if (isDev) {
+        getBotInfo(suffix, bot).then((r) => {
+          let data = {
+            'title': `Stats for bot ${r.body.name}`,
+            'description': 'Note: Avatars are not submitted by the API and are hence not rendered.',
+            'url': `https://bots.discord.pw/bots/${r.body.user_id}`,
+            'color': 6485980,
+            'timestamp': new Date(),
+            'footer': { 'icon_url': `${bot.User.avatarURL}`, 'text': 'Logger' },
+            'fields': [{
+              'name': 'Name:',
+              'value': `${r.body.name}`
+            },
+            {
+              'name': 'Description:',
+              'value': `${r.body.description}`
+            },
+            {
+              'name': 'Library:',
+              'value': `${r.body.library}`
+            },
+            {
+              'name': `Invite URL`,
+              'value': `[Click here to invite](${r.body.invite_url})`
+            },
+            {
+              'name': 'Prefix:',
+              'value': `${r.body.prefix}`
+            }]
+          }
+          msg.channel.sendMessage(' ', false, data)
+        })
+      } else {
+        msg.reply(`${lang.perms.NO_PERMISSION} ${lang.perms.NOT_DEV}`)
+      }
     }
   }
 }

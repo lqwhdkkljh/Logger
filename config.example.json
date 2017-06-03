@@ -16,5 +16,11 @@
     "ids": {
         "devRole": "DEVS ONLY - role ID",
         "adminChannel": "DEVS ONLY - channel ID"
+    },
+    "stats": {
+        "dbots": {
+            "token": "Discord Bots API token",
+            "bot_id": "Discord Bots bot ID"
+        }
     }
 }
