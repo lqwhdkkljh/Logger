@@ -97,7 +97,6 @@ Commands.eval = {
           depth: 1
         })
         sendEval = sendEval.replace(new RegExp(Config.core.token, 'gi'), 'censored') // Thanks WildBeast
-        sendEval = sendEval.replace(new RegExp(Config.pastebin.devkey, 'gi'), 'censored')
         if (sendEval.length >= 2000) {
           sendEval = sendEval.substr(0, 1990) + '(cont)'
           msg.channel.sendMessage('```xl\n' + sendEval + '```').then((m) => {

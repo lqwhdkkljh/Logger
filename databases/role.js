@@ -1,5 +1,7 @@
-import { checkNick, checkRoleChanges } from '../engine/checks'
+import { getLastResult } from './auditlogs'
 import { getChannel } from './channel'
+import { checkNick, checkRoleChanges } from '../engine/checks'
+import { getMinutes, getHours } from '../engine/timeutils'
 
 function checkMemberUpdates (m, bot) {
   let data = {
@@ -36,4 +38,16 @@ function checkMemberUpdates (m, bot) {
   })
 }
 
-export { checkRoleChanges, checkMemberUpdates }
+function guildRoleDeleted (g, bot) {
+  console.log('recieved')
+  getChannel(g.guild.id, bot).then((lc) => {
+    console.log('got the channel')
+    getLastResult(bot, g.guild.id).then((res) => {
+      console.log('also got last result? wtf')
+      console.log(`:put_litter_in_its_place: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` has deleted role ${res.roleName}`)
+      lc.sendMessage(`:put_litter_in_its_place: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` has deleted role **${res.roleName}**`)
+    })
+  })
+}
+
+export { checkRoleChanges, checkMemberUpdates, guildRoleDeleted }

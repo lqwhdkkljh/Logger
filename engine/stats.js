@@ -8,7 +8,7 @@ const baseUrl = 'https://bots.discord.pw/api'
 
 function getBotInfo (id, bot) {
   return new Promise(function (resolve, reject) {
-    if (Config.stats.dbots.enable === false) {
+    if (!Config.stats.dbots.enabled) {
       resolve(`Discord Bots functions have been turned off. Enable them in the config to use this command.`)
     } else {
       request
@@ -29,7 +29,7 @@ function getBotInfo (id, bot) {
 
 function postStats (content, bot) {
   return new Promise(function (resolve, reject) {
-    if (Config.stats.dbots.enable === false) {
+    if (!Config.stats.dbots.enabled) {
       resolve(`Discord Bots functions have been turned off. Enable them in the config to use this command.`)
     } else {
       request
@@ -51,7 +51,7 @@ function postStats (content, bot) {
 
 function getStats (bot) {
   return new Promise(function (resolve, reject) {
-    if (Config.stats.dbots.enable === false) {
+    if (!Config.stats.dbots.enabled) {
       resolve(`Discord Bots functions have been turned off. Enable them in the config to use this command.`)
     } else {
       request

@@ -50,13 +50,13 @@ function guildCreate (g, bot) {
       'logchannel': ''
     }).run().then((r) => {
       if (r.inserted === 1) {
-        bot.Users.get(g.guild.owner_id).openDM().then((dm) => {
+        g.guild.owner.openDM().then((dm) => {
           dm.sendMessage(`**Hello, thanks for inviting me to your server!**\n
     I'll start logging events as soon as you set me a channel to do that in. Please browse to the channel you would like logging to be put in and type \`${Config.core.prefix}setchannel\` there.\n
     In addition, make sure I have permissions to read Audit Logs or I may not function correctly!\n
     When you've done that, you're all set! Have a good time :smile:`)
         })
-        pushAdminLog(`Joined server ${g.guild.name} (${g.guild.id}) and created guild info successfully.`, bot)
+        pushAdminLog(`Joined server ${g.guild.name} (${g.guild.id}) and created guild info successfully.\nInfo:\n\`\`\`xl\nMembers: ${g.guild.members.length}\nIs Partnered: ${Array.from(g.guild.features).length > 0 ? 'Yes' : 'No'}\nOwned by ${g.guild.owner.username} (${g.guild.owner.id})\`\`\`Current guild count: ${bot.Guilds.length}`, bot)
       } else {
         logger.error(`Something went wrong while creating guild info for server ${g.guild.name}: DATA_CREATION_FAILED`)
         pushAdminLog(`Failed to create guild info for server ${g.guild.name} (${g.guild.id}), unknown error.`, bot)
@@ -78,7 +78,7 @@ function guildDelete (g) {
       }
     })
   } catch (e) {
-    logger.error(`An error occured while deleting guild information for server ${g.guildId}: \n${e}`)
+    logger.error(`An error occured while deleting guild information for server ${g.guildId}:\n` + e) // [object Object] otherwise.
     // I think this is enough, obsolete guild info is not harmful
   }
 }

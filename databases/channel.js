@@ -33,9 +33,19 @@ function getChannel (guildID, bot) {
 function channelCreated (c, bot) {
   getChannel(c.channel.guild_id, bot).then((lc) => {
     getLastResult(bot, c.channel.guild_id).then((res) => {
-      lc.sendMessage(`:new: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` created a ${c.channel.type === 2 ? 'voice' : 'text'} channel: **${c.channel.name}** (${c.channel.id})`)
+      lc.sendMessage(`:new: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` created a ${res.type} channel: **${res.channelName}** (${res.channelID})`)
     }).catch(_ => {
       // No audit log access or something else; ignore
+    })
+  })
+}
+
+function channelUpdated (c, bot) {
+  getChannel(c.channel.guild_id, bot).then((lc) => {
+    getLastResult(bot, c.channel.guild_id).then((res) => {
+      if (res.before === res.after) {} else {
+        lc.sendMessage(`:gear: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` edited a ${res.type} channel's name: Before: **${res.before}** | After: **${res.after}**`)
+      }
     })
   })
 }
@@ -43,11 +53,11 @@ function channelCreated (c, bot) {
 function channelDeleted (c, bot) {
   getChannel(c.data.guild_id, bot).then((lc) => {
     getLastResult(bot, c.data.guild_id).then((res) => {
-      lc.sendMessage(`🚮 [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` deleted a ${c.data.type === 2 ? 'voice' : 'text'} channel: **${c.data.name}** (${c.channelId})`)
+      lc.sendMessage(`🚮 [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` deleted a ${res.type} channel: **${res.channelName}** (${res.channelID})`)
     }).catch(_ => {
       // Ignore
     })
   })
 }
 
-export { channelCreated, channelDeleted, getChannel }
+export { channelCreated, channelUpdated, channelDeleted, getChannel }
