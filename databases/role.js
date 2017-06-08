@@ -39,12 +39,8 @@ function checkMemberUpdates (m, bot) {
 }
 
 function guildRoleDeleted (g, bot) {
-  console.log('recieved')
   getChannel(g.guild.id, bot).then((lc) => {
-    console.log('got the channel')
     getLastResult(bot, g.guild.id).then((res) => {
-      console.log('also got last result? wtf')
-      console.log(`:put_litter_in_its_place: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` has deleted role ${res.roleName}`)
       lc.sendMessage(`:put_litter_in_its_place: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` has deleted role **${res.roleName}**`)
     })
   })

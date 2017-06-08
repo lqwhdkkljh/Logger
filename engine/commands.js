@@ -74,6 +74,7 @@ Commands.recoverguilds = {
   name: 'recoverguilds',
   info: 'Tries to replace missing guild documents.',
   needs: 'Bot Developer',
+  hidden: true,
   func: function (msg, suffix, bot) {
     bot.Guilds.map((g) => {
       checkAndReplace(g, bot)
@@ -172,6 +173,7 @@ Commands.setstatus = {
   name: 'setstatus',
   info: 'Sets current playing game for the bot.',
   needs: 'Bot Developer',
+  hidden: true,
   func: function (msg, suffix, bot) {
     let isDev = checkIfDev(msg)
     if (isDev) {
@@ -187,6 +189,7 @@ Commands.setavatar = {
   name: 'setavatar',
   info: 'Sets a new avatar for the bot.',
   needs: 'Bot Developer',
+  hidden: true,
   func: function (msg, suffix, bot) {
     let isDev = checkIfDev(msg)
     if (isDev) {

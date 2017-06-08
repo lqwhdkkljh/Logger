@@ -103,11 +103,13 @@ function removeLogChannel (msg, bot) {
   r.db('Guilds').table('all').filter({
     'guildID': msg.guild.id
   }).update({
-    'logchannel': ''}).run().then((u) => {
-      if (u.replaced === 1) {
+    'logchannel': ''}).run().then((x) => {
+      if (x.replaced === 1) {
         msg.channel.sendMessage(`Alright ${msg.author.mention}, your log channel has been cleared!`)
+      } else if (x.skipped === 1 || x.unchanged === 1) {
+        msg.channel.sendMessage(`I can't remove your log channel if you haven't set it yet ${msg.author.mention}!`)
       } else {
-        logger.error(`An error occurred while removing log channel for server "${msg.guild.name}" (${msg.guild.id}):\n${u}`)
+        logger.error(`An error occurred while removing log channel for server "${msg.guild.name}" (${msg.guild.id}):\n` + x.msg)
         pushAdminLog(`Failed to remove log channel for server ${msg.guild.name} (${msg.guild.id}), check console for details.`, bot)
       }
     })
