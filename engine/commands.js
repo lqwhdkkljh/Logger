@@ -74,6 +74,7 @@ Commands.recoverguilds = {
   name: 'recoverguilds',
   info: 'Tries to replace missing guild documents.',
   needs: 'Bot Developer',
+  hidden: true,
   func: function (msg, suffix, bot) {
     bot.Guilds.map((g) => {
       checkAndReplace(g, bot)
@@ -97,7 +98,9 @@ Commands.eval = {
           depth: 1
         })
         sendEval = sendEval.replace(new RegExp(Config.core.token, 'gi'), 'censored') // Thanks WildBeast
-        sendEval = sendEval.replace(new RegExp(Config.pastebin.devkey, 'gi'), 'censored')
+        if (Config.stats.dbots.enabled) {
+          sendEval = sendEval.replace(new RegExp(Config.stats.dbots.token, 'gi'), 'censored')
+        }
         if (sendEval.length >= 2000) {
           sendEval = sendEval.substr(0, 1990) + '(cont)'
           msg.channel.sendMessage('```xl\n' + sendEval + '```').then((m) => {
@@ -170,6 +173,7 @@ Commands.setstatus = {
   name: 'setstatus',
   info: 'Sets current playing game for the bot.',
   needs: 'Bot Developer',
+  hidden: true,
   func: function (msg, suffix, bot) {
     let isDev = checkIfDev(msg)
     if (isDev) {
@@ -185,6 +189,7 @@ Commands.setavatar = {
   name: 'setavatar',
   info: 'Sets a new avatar for the bot.',
   needs: 'Bot Developer',
+  hidden: true,
   func: function (msg, suffix, bot) {
     let isDev = checkIfDev(msg)
     if (isDev) {

@@ -1,10 +1,10 @@
 import Discordie from 'discordie'
 import { logger } from './engine/logger'
 import { Commands } from './engine/commands'
-import { channelCreated, channelDeleted } from './databases/channel'
+import { channelCreated, channelUpdated, channelDeleted } from './databases/channel'
 import { guildCreate, guildDelete, pingDatabase } from './databases/guild'
 import { messageUpdate, messageDelete, messageDeleteBulk } from './databases/message'
-import { checkMemberUpdates } from './databases/role'
+import { checkMemberUpdates, guildRoleDeleted } from './databases/role'
 import { guildJoin, guildLeave, guildBan, guildUnban, guildEmojiUpdate } from './databases/server'
 import { postStats } from './engine/stats'
 
@@ -25,7 +25,7 @@ bot.Dispatcher.on('GATEWAY_READY', _ => {
   logger.info(`Successfully logged in!\nUser: ${bot.User.username}\nID: ${bot.User.id}`)
   pingDatabase() // Verify RethinkDB is running
   bot.User.setStatus('online', Config.core.defaultstatus)
-  if (Config.stats.dbots.enable === true) {
+  if (Config.stats.dbots.enabled) {
     postStats(bot.Guilds.length, bot)
   } else {
     // Omit
@@ -59,9 +59,9 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
                     cmdArray.push(`\`${Config.core.prefix}${Commands[prop].name}\` - ${Commands[prop].info}`)
                   }
                 }
-                y.message.channel.sendMessage(`**Command list for Logger:**\n \n${cmdArray.join('\n')}\n \nPlease note that all commands may not be usable for you. Use \`%help <command>\` for more info.`)
+                y.message.channel.sendMessage(`**Command list for Logger:**\n \n${cmdArray.join('\n')}\n \nPlease note that all commands may not be usable for you. Use \`${Config.core.prefix}help <command>\` for more info.`)
               } else {
-                logger.debug(`Executing command "${cmdObj}" from user ${y.message.author.name} (Server ID: ${y.message.guild.id})`)
+                logger.info(`Executing command "${cmdObj}" from user ${y.message.author.name} (Server ID: ${y.message.guild.id})`)
                 Commands[cmdObj].func(y.message, suffix, bot)
               }
             }
@@ -76,6 +76,10 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
 
 bot.Dispatcher.on('CHANNEL_CREATE', (c) => {
   channelCreated(c, bot)
+})
+
+bot.Dispatcher.on('CHANNEL_UPDATE', (c) => {
+  channelUpdated(c, bot)
 })
 
 bot.Dispatcher.on('CHANNEL_DELETE', (c) => {
@@ -112,6 +116,10 @@ bot.Dispatcher.on('GUILD_BAN_ADD', (u) => {
 
 bot.Dispatcher.on('GUILD_BAN_REMOVE', (u) => {
   guildUnban(u, bot)
+})
+
+bot.Dispatcher.on('GUILD_ROLE_DELETE', (u) => {
+  guildRoleDeleted(u, bot)
 })
 
 bot.Dispatcher.on('MESSAGE_UPDATE', (m) => {

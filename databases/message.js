@@ -53,14 +53,24 @@ function messageDeleteBulk (m, bot) {
           return message.content
         })
         let osType = `${__dirname.substr(0, __dirname.length - 9)}upload/`
-        fs.writeFile(`${osType}bulk_delete_messages.txt`, messageArray.join('\n'), (err) => {
-          if (err) logger.error(err)
-          lc.uploadFile('upload/bulk_delete_messages.txt', 'upload/bulk_delete_messages.txt', `❌ [\`${getHours()}:${getMinutes()}\`] Multiple messages were deleted from <#${m.messages[0].channel.id}>:`).then(() => {
-            fs.unlink('upload/bulk_delete_messages.txt', (err) => {
-              if (err) logger.error(err)
+        fs.writeFile(`${osType}bulk_delete_messages.txt`, messageArray.join('\r\n'), (err) => { // Attempt to fix newlines not being rendered
+          if (err) {
+            logger.error(err)
+          } else {
+            fs.stat('upload/bulk_delete_messages.txt', (err) => {
+              if (err) {
+                logger.error(err)
+              } else {
+                lc.uploadFile('upload/bulk_delete_messages.txt', 'upload/bulk_delete_messages.txt', `❌ [\`${getHours()}:${getMinutes()}\`] Multiple messages were deleted from <#${m.messages[0].channel.id}>:`).then(() => {
+                  fs.unlink('upload/bulk_delete_messages.txt', (err) => {
+                    if (err) {
+                      logger.error(err)
+                    }
+                  })
+                })
+              }
             })
-          })
-        // Omit if nothing
+          }
         })
       }
     })
