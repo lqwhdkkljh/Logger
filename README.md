@@ -29,9 +29,11 @@ This bot currently supports setting a custom log channel on a per-server basis. 
 
 As a recent feature we've also introduced audit log integration for logging. This means that additional info for the events above is provided with each log entry.
 
+**Please note:** We use Trello as our progress tracker, you can read what's going on with the bot here: https://trello.com/b/6hDyOJtL/logger
+
 ## Commands
 
-**Command list:**
+**End users**
 
 | Command | Description | Role required |
 | ------- | ----------- | ------------- |
@@ -40,8 +42,18 @@ As a recent feature we've also introduced audit log integration for logging. Thi
 | %info | Return some info on the bot. | None |
 | %invite | Invite the bot to a server. | None |
 | %setchannel | Set the logging channel to the current channel. | Server Owner |
+| %clearchannel | Clear the logging channel for the server. | Server Owner |
+
+**Developer tools**
+
+| Command | Description | Role required |
+| ------- | ----------- | ------------- |
+| %eval | Evaluate JavaScript code. | Developer |
 | %setstatus \<text\> | Set current playing status. | Developer |
 | %setavatar \<filename\> | Set a new avatar. Needs file on local disk. | Developer |
+| %recoverguilds | Attempts to recover missing guild data. | Developer |
+| %botinfo | Gets information of a bot from [Discord Bots](http://bots.discord.pw). | Developer | 
+
 
 
 ## Maintainers
