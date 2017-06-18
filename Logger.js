@@ -98,8 +98,8 @@ bot.Dispatcher.on('CHANNEL_DELETE', (c) => {
 })
 
 bot.Dispatcher.on('GUILD_CREATE', (g) => {
-  r.db('Guilds').table('all').get(g.guild.id).then((g) => {
-    if (g === null) {
+  r.db("Guilds").table("all").filter({"guildID": g.guild.id}).run().then((a) => { // eslint-disable-line quotes
+    if (a.length === 0) {
       guildCreate(g, bot)
     } else {
       // Guild already exists, omit creation
