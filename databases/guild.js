@@ -63,7 +63,7 @@ function guildCreate (g, bot) {
       }
     })
   } catch (e) {
-    logger.error(`An error occured while creating guild information for server "${g.guild.name}" (${g.guild.id}): \n${e}`)
+    logger.error(`An error occured while creating guild information for server "${g.guild.name}" (${g.guild.id}):\n` + e)
     pushAdminLog(`Failed to create guild info for server ${g.guild.name} (${g.guild.id}), check console for details.`, bot)
   }
 }
@@ -84,35 +84,43 @@ function guildDelete (g) {
 }
 
 function updateLogChannel (msg, bot) {
-  r.db('Guilds').table('all').filter({
-    'guildID': msg.guild.id
-  }).update({
-    'logchannel': msg.channel.id}).run().then((u) => {
-      if (u.replaced === 1) {
-        msg.channel.sendMessage(`Alright ${msg.author.mention}, I will send messages to "${msg.channel.name}" (${msg.channel.id})!`)
-      } else if (u.unchanged === 1) {
-        msg.channel.sendMessage(`I'm already sending log messages to channel "${msg.channel.name}", ${msg.author.mention}!`)
-      } else {
-        logger.error(`An error occurred while updating log channel for server "${msg.guild.name}" (${msg.guild.id}):\n` + u)
-        pushAdminLog(`Failed to update log channel for server ${msg.guild.name} (${msg.guild.id}), check console for details.`, bot)
-      }
-    })
+  try {
+    r.db('Guilds').table('all').filter({
+      'guildID': msg.guild.id
+    }).update({
+      'logchannel': msg.channel.id}).run().then((u) => {
+        if (u.replaced === 1) {
+          msg.channel.sendMessage(`Alright ${msg.author.mention}, I will send messages to "${msg.channel.name}" (${msg.channel.id})!`)
+        } else if (u.unchanged === 1) {
+          msg.channel.sendMessage(`I'm already sending log messages to channel "${msg.channel.name}", ${msg.author.mention}!`)
+        } else {
+          msg.channel.sendMessage('Something went wrong!')
+        }
+      })
+  } catch (e) {
+    logger.error(`An error occurred while updating log channel for server "${msg.guild.name}" (${msg.guild.id}):\n` + e)
+    pushAdminLog(`Failed to update log channel for server ${msg.guild.name} (${msg.guild.id}), check console for details.`, bot)
+  }
 }
 
 function removeLogChannel (msg, bot) {
-  r.db('Guilds').table('all').filter({
-    'guildID': msg.guild.id
-  }).update({
-    'logchannel': ''}).run().then((x) => {
-      if (x.replaced === 1) {
-        msg.channel.sendMessage(`Alright ${msg.author.mention}, your log channel has been cleared!`)
-      } else if (x.skipped === 1 || x.unchanged === 1) {
-        msg.channel.sendMessage(`I can't remove your log channel if you haven't set it yet ${msg.author.mention}!`)
-      } else {
-        logger.error(`An error occurred while removing log channel for server "${msg.guild.name}" (${msg.guild.id}):\n` + x)
-        pushAdminLog(`Failed to remove log channel for server ${msg.guild.name} (${msg.guild.id}), check console for details.`, bot)
-      }
-    })
+  try {
+    r.db('Guilds').table('all').filter({
+      'guildID': msg.guild.id
+    }).update({
+      'logchannel': ''}).run().then((x) => {
+        if (x.replaced === 1) {
+          msg.channel.sendMessage(`Alright ${msg.author.mention}, your log channel has been cleared!`)
+        } else if (x.skipped === 1 || x.unchanged === 1) {
+          msg.channel.sendMessage(`I can't remove your log channel if you haven't set it yet ${msg.author.mention}!`)
+        } else {
+          msg.channel.sendMessage('Something went wrong!')
+        }
+      })
+  } catch (e) {
+    logger.error(`An error occurred while removing log channel for server "${msg.guild.name}" (${msg.guild.id}):\n` + e)
+    pushAdminLog(`Failed to remove log channel for server ${msg.guild.name} (${msg.guild.id}), check console for details.`, bot)
+  }
 }
 
 function pingDatabase () {
