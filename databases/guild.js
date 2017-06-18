@@ -93,7 +93,7 @@ function updateLogChannel (msg, bot) {
       } else if (u.unchanged === 1) {
         msg.channel.sendMessage(`I'm already sending log messages to channel "${msg.channel.name}", ${msg.author.mention}!`)
       } else {
-        logger.error(`An error occurred while updating log channel for server "${msg.guild.name}" (${msg.guild.id}):\n${u}`)
+        logger.error(`An error occurred while updating log channel for server "${msg.guild.name}" (${msg.guild.id}):\n` + u)
         pushAdminLog(`Failed to update log channel for server ${msg.guild.name} (${msg.guild.id}), check console for details.`, bot)
       }
     })
@@ -109,7 +109,7 @@ function removeLogChannel (msg, bot) {
       } else if (x.skipped === 1 || x.unchanged === 1) {
         msg.channel.sendMessage(`I can't remove your log channel if you haven't set it yet ${msg.author.mention}!`)
       } else {
-        logger.error(`An error occurred while removing log channel for server "${msg.guild.name}" (${msg.guild.id}):\n` + x.msg)
+        logger.error(`An error occurred while removing log channel for server "${msg.guild.name}" (${msg.guild.id}):\n` + x)
         pushAdminLog(`Failed to remove log channel for server ${msg.guild.name} (${msg.guild.id}), check console for details.`, bot)
       }
     })
