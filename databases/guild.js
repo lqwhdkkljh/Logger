@@ -94,7 +94,7 @@ function updateLogChannel (msg, bot) {
         } else if (u.unchanged === 1) {
           msg.channel.sendMessage(`I'm already sending log messages to channel "${msg.channel.name}", ${msg.author.mention}!`)
         } else {
-          msg.channel.sendMessage('Something went wrong!')
+          msg.channel.sendMessage(`Alright ${msg.author.mention}, I will send messages to "${msg.channel.name}" (${msg.channel.id})!`)
         }
       })
   } catch (e) {
@@ -114,7 +114,7 @@ function removeLogChannel (msg, bot) {
         } else if (x.skipped === 1 || x.unchanged === 1) {
           msg.channel.sendMessage(`I can't remove your log channel if you haven't set it yet ${msg.author.mention}!`)
         } else {
-          msg.channel.sendMessage('Something went wrong!')
+          msg.channel.sendMessage(`Alright ${msg.author.mention}, your log channel has been cleared!`)
         }
       })
   } catch (e) {

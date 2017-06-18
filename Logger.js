@@ -61,7 +61,7 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
                 }
                 y.message.channel.sendMessage(`**Command list for Logger:**\n \n${cmdArray.join('\n')}\n \nPlease note that all commands may not be usable for you. Use \`${Config.core.prefix}help <command>\` for more info.`)
               } else {
-                logger.info(`Executing command "${cmdObj}" from user ${y.message.author.name} (Server ID: ${y.message.guild.id})`)
+                logger.info(`Executing command "${cmdObj}" from user ${y.message.author.username} (Server ID: ${y.message.guild.id})`)
                 Commands[cmdObj].func(y.message, suffix, bot)
               }
             }
