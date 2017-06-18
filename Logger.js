@@ -12,6 +12,17 @@ const Config = require('./config.json')
 const bot = new Discordie({ autoReconnect: true })
 export { bot }
 
+const Dash = require('rethinkdbdash')
+let r = new Dash({
+  user: Config.database.user,
+  password: Config.database.pass,
+  silent: true,
+  servers: [{
+    host: Config.database.host,
+    port: Config.database.port
+  }]
+})
+
 process.title = 'Logger'
 
 bot.connect({ token: Config.core.token })
@@ -87,7 +98,18 @@ bot.Dispatcher.on('CHANNEL_DELETE', (c) => {
 })
 
 bot.Dispatcher.on('GUILD_CREATE', (g) => {
-  guildCreate(g, bot)
+  r.db("Guilds").table("all").filter({"guildID": g.guild.id}).run().then((a) => { // eslint-disable-line quotes
+    if (a.length === 0) {
+      guildCreate(g, bot)
+    } else {
+      // Guild already exists, omit creation
+    }
+  })
+  /*
+  This check is done to prevent database document duplication (And subsequent database fire)
+  when guilds are lazy-loaded and hence the chunk that is not in the GATEWAY_READY event comes in via GUILD_CREATE.
+  Props to @SteamingMutt and @zaza7 for helping us find and fix this issue.
+  */
 })
 
 bot.Dispatcher.on('GUILD_DELETE', (g) => {
