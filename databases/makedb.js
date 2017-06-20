@@ -10,7 +10,7 @@ let r = new Dash({
   silent: true,
   servers: [{
     host: Config.database.host,
-    port: Config.database.pass
+    port: Config.database.port
   }]
 })
 
