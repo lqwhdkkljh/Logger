@@ -1,6 +1,8 @@
 <p style="text-align: center";>
 <img src="./res/Logger.png"></p>
 
+**Logger is due for a rewrite!**
+
 Logger is a simple Discord bot for logging different events in your Discord server. It's coded in Node.js, using the discordie library to interact with the Discord API.
 
 Click this link to invite the bot to your server: http://logger.lwtechgaming.me
