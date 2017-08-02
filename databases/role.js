@@ -41,7 +41,11 @@ function checkMemberUpdates (m, bot) {
 function guildRoleDeleted (g, bot) {
   getChannel(g.guild.id, bot).then((lc) => {
     getLastResult(bot, g.guild.id).then((res) => {
-      lc.sendMessage(`:put_litter_in_its_place: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` has deleted role **${res.roleName}**`)
+      if (res === false) {
+        // Do nothing
+      } else {
+        lc.sendMessage(`:put_litter_in_its_place: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` has deleted role **${res.roleName}**`)
+      }
     })
   })
 }
