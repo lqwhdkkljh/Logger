@@ -53,11 +53,10 @@ bot.Dispatcher.on('MESSAGE_CREATE', y => {
       let prefix = Config.core.prefix
       if (y.message.content.startsWith(prefix)) {
         let cmdObj = y.message.content.substring(prefix.length).split(' ')[0].toLowerCase()
-        let keys = Object.keys(Commands)
         let splitSuffix = y.message.content.substr(Config.core.prefix.length).split(' ')
         let suffix = splitSuffix.slice(1, splitSuffix.length).join(' ')
 
-        if (keys.includes(cmdObj)) {
+        if (Object.keys(Commands).includes(cmdObj)) {
           try {
             let botPerms = bot.User.permissionsFor(y.message.channel)
             if (!botPerms.Text.READ_MESSAGES || !botPerms.Text.SEND_MESSAGES) {

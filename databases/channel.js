@@ -33,7 +33,11 @@ function getChannel (guildID, bot) {
 function channelCreated (c, bot) {
   getChannel(c.channel.guild_id, bot).then((lc) => {
     getLastResult(bot, c.channel.guild_id).then((res) => {
-      lc.sendMessage(`:new: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` created a ${res.type} channel: **${res.channelName}** (${res.channelID})`)
+      if (res === false) {
+        // Ignore
+      } else {
+        lc.sendMessage(`:new: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` created a ${res.type} channel: **${res.channelName}** (${res.channelID})`)
+      }
     }).catch(_ => {
       // No audit log access or something else; ignore
     })
@@ -43,8 +47,12 @@ function channelCreated (c, bot) {
 function channelUpdated (c, bot) {
   getChannel(c.channel.guild_id, bot).then((lc) => {
     getLastResult(bot, c.channel.guild_id).then((res) => {
-      if (res.before === res.after) {} else {
-        lc.sendMessage(`:gear: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` edited a ${res.type} channel's name: Before: **${res.before}** | After: **${res.after}**`)
+      if (res === false) {
+        // Do nothing
+      } else {
+        if (res.before === res.after) {} else {
+          lc.sendMessage(`:gear: [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` edited a ${res.type} channel's name: Before: **${res.before}** | After: **${res.after}**`)
+        }
       }
     })
   })
@@ -53,7 +61,11 @@ function channelUpdated (c, bot) {
 function channelDeleted (c, bot) {
   getChannel(c.data.guild_id, bot).then((lc) => {
     getLastResult(bot, c.data.guild_id).then((res) => {
-      lc.sendMessage(`🚮 [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` deleted a ${res.type} channel: **${res.channelName}** (${res.channelID})`)
+      if (res === false) {
+        // Do nothing
+      } else {
+        lc.sendMessage(`🚮 [\`${getHours()}:${getMinutes()}\`] User \`${res.perpetrator.username}#${res.perpetrator.discriminator}\` deleted a ${res.type} channel: **${res.channelName}** (${res.channelID})`)
+      }
     }).catch(_ => {
       // Ignore
     })
