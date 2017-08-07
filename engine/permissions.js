@@ -3,7 +3,7 @@ const devRoleId = Config.ids.devRole
 
 function checkIfDev (msg) {
   function checkIds (id) {
-    if (Config.permissions.eval.indexOf(msg.author.id) !== 0) {
+    if (Config.permissions.eval.indexOf(msg.author.id) !== -1) { // I hate you LW.
       return true
     } else {
       return false

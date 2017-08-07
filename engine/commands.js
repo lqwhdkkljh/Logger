@@ -85,12 +85,13 @@ Commands.recoverguilds = {
 
 Commands.eval = {
   name: 'eval',
-  info: 'Evaluate JavaScript!', // Yes, Piero, casing does matter
+  info: 'Evaluate JavaScript!',
   needs: 'Bot Developer',
   hidden: true,
   func: function (msg, suffix, bot) {
     let isDev = checkIfDev(msg)
     if (isDev) {
+      logger.info(`Executing eval from ${msg.author.username}: ${msg.content}`)
       try {
         const util = require('util')
         let evaluated = eval(suffix) // eslint-disable-line no-eval
